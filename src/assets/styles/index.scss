@@ -1,0 +1,50 @@
+@import "./components/DataTable", "./components/ImageDrop";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+
+  .col-1 {
+    min-height: 100vh;
+  }
+
+  .col-2 {
+    flex: 1;
+
+    .page-contents {
+      margin-top: 100px;
+      min-height: 100vh;
+    }
+  }
+}
+
+.create-container {
+  .create-text {
+    display: flex;
+    align-items: center;
+    background-color: #ec82b4;
+    color: #df4f92;
+    text-shadow: 1px 1px 1px #e90871;
+    width: 270px;
+    height: 51px;
+    border-radius: 15px;
+    padding: 5px;
+    position: absolute;
+    left: 10%;
+    box-shadow: 0 0 10px #ec82b4;
+
+    .arrow {
+      color: #ec82b4;
+      font-size: 4.5rem;
+      position: absolute;
+      right: -10%;
+      top: 50%;
+      transform: translateY(-40%);
+    }
+  }
+}
