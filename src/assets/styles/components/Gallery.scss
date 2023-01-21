@@ -1,0 +1,131 @@
+.gallery-wrapper {
+  display: flex;
+
+  .main-image {
+    width: 40%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .image-wrapper {
+      width: 400px;
+      height: 250px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px black;
+      position: relative;
+
+      #main-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.192);
+      }
+
+      .icons-bg {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.664);
+        width: 100%;
+        height: 100%;
+        transition: all 0.2s ease-in-out;
+        border-radius: 15px;
+
+        .icons {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+  }
+
+  .other-images {
+    flex: 1;
+    margin-top: 15px;
+    margin-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    .add-wrapper {
+      width: 172px;
+      height: 102px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .add {
+        width: 160px;
+        height: 90px;
+        border-radius: 15px;
+        border: 3px dashed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:active {
+          transform: scale(0.95);
+          #add-icon {
+            transition: all 0.2s ease-in-out;
+            font-size: 3rem;
+          }
+        }
+      }
+    }
+
+    .other-image-wrapper,
+    .other-image-wrapper-active {
+      width: 172px;
+      height: 102px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.192);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      .other-image {
+        width: 170px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.192);
+        transition: all 0.2s ease-in-out;
+
+        #img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 15px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.192);
+          transition: all 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        border: 1px solid;
+
+        .other-image {
+          #img {
+            filter: brightness(50%);
+          }
+        }
+      }
+    }
+
+    .other-image-wrapper-active {
+      border: 1px solid;
+
+      .other-image {
+        #img {
+          filter: brightness(50%);
+        }
+      }
+    }
+  }
+}

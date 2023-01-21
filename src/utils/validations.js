@@ -52,3 +52,12 @@ export const cellFormSchema = yup.object().shape({
   battery: yup.string().required("Please Fill in the Field!"),
   price: yup.number().required("Please Fill in the Field!"),
 });
+
+export const accessoryFormSchema = yup.object().shape({
+  category: yup.string().required("Please Fill in the Field!"),
+  name: yup.string().required("Please Fill in the Field!"),
+  brand: yup.string().required("Please Fill in the Field!"),
+  type: yup.string().required("Please Fill in the Field!"),
+  description: yup.string().required("Please Fill in the Field!"),
+  price: yup.number().required("Please Fill in the Field!"),
+});

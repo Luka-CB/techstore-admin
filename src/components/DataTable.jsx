@@ -3,11 +3,9 @@ import {
   useTheme,
   Box,
   Table,
-  TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Toolbar,
   Typography,
@@ -18,53 +16,51 @@ import {
   FormControlLabel,
   Switch,
   Zoom,
+  CircularProgress,
+  TableBody,
 } from "@mui/material";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { colorPallets } from "../theme";
-import DummyImage from "../assets/dummy.jpg";
 import Search from "./Search";
 import { Link } from "react-router-dom";
+import Content from "./Content";
+import SizesConfig from "./form/SizesConfig";
+import { useDispatch, useSelector } from "react-redux";
+import Gallery from "./Gallery";
+import DeleteProductModal from "./DeleteProductModal";
+import {
+  addAllCheckItems,
+  removeAllCheckItems,
+} from "../redux/features/checkboxSlice";
 
-const dummyColors = [
-  {
-    _id: 1,
-    name: "Graphite",
-    code: "#1a2129",
-    qty: 7,
-  },
-  {
-    _id: 2,
-    name: "Silver",
-    code: "#f9f4f0",
-    qty: 0,
-  },
-  {
-    _id: 3,
-    name: "Gold",
-    code: "#fee2de",
-    qty: 4,
-  },
-  {
-    _id: 4,
-    name: "Sierra Blue",
-    code: "#256080",
-    qty: 8,
-  },
-  {
-    _id: 5,
-    name: "Alpine Green",
-    code: "#586958",
-    qty: 3,
-  },
-];
-
-const DataTable = ({ contentType }) => {
+const DataTable = ({ content, contentLoading, contentType }) => {
   const [dense, setDense] = useState(false);
 
   const theme = useTheme();
   const colors = colorPallets(theme.palette.mode);
+
+  const dispatch = useDispatch();
+
+  const { checkedData } = useSelector((state) => state.checkbox);
+  const { isSizesModalOpen } = useSelector((state) => state.sizesModal);
+  const { isGalleryOpen } = useSelector((state) => state.gallery);
+  const { isDelProductModalOpen } = useSelector(
+    (state) => state.delProductModal
+  );
+
+  const checkAllItemHandler = (checkState) => {
+    const itemIds = content.map((item) => item._id);
+
+    if (checkState) {
+      dispatch(addAllCheckItems({ contentType, itemIds }));
+    } else {
+      dispatch(removeAllCheckItems());
+    }
+  };
+
+  const checkedItemCount = checkedData?.checkedItemIds?.length;
+  const rowCount = content?.length;
 
   return (
     <Box sx={{ width: "90%", margin: "30px auto" }}>
@@ -92,20 +88,20 @@ const DataTable = ({ contentType }) => {
             <Box display="flex" alignItems="center">
               {contentType === "customer" ? (
                 <Typography variant="h6" mr="20px">
-                  Total Customers:{" "}
+                  {content?.length > 1 ? "Total Customers" : "Total Customer"}:{" "}
                   <span
                     style={{ color: colors.secondary[500], fontSize: "1rem" }}
                   >
-                    2909
+                    {content?.length}
                   </span>
                 </Typography>
               ) : (
                 <Typography variant="h6" mr="20px">
-                  Total Products:{" "}
+                  {content?.length > 1 ? "Total Products" : "Total Product"}:{" "}
                   <span
                     style={{ color: colors.secondary[500], fontSize: "1rem" }}
                   >
-                    2390
+                    {content?.length}
                   </span>
                 </Typography>
               )}
@@ -155,14 +151,21 @@ const DataTable = ({ contentType }) => {
           }}
         >
           <Table
-            sx={{ minWidth: 650 }}
+            sx={{ minWidth: 650, minHeight: "30vh", position: "relative" }}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
           >
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox color="secondary" />
+                  <Checkbox
+                    color="secondary"
+                    indeterminate={
+                      checkedItemCount > 0 && checkedItemCount < rowCount
+                    }
+                    checked={rowCount > 0 && checkedItemCount === rowCount}
+                    onChange={(e) => checkAllItemHandler(e.target.checked)}
+                  />
                 </TableCell>
                 <TableCell sx={{ fontSize: "0.7rem" }}>Product Name</TableCell>
                 <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
@@ -194,108 +197,47 @@ const DataTable = ({ contentType }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow
-                hover
-                role="checkbox"
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell padding="checkbox">
-                  <Checkbox color="secondary" />
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  Some Product Name
-                </TableCell>
-                <TableCell align="center">
-                  <img src={DummyImage} alt="" id="table-image" />
-                </TableCell>
-                <TableCell align="center">Samsung</TableCell>
-                {contentType === "computer" ? (
-                  <TableCell align="center">All-In-One</TableCell>
-                ) : (
-                  <TableCell align="center">2018</TableCell>
-                )}
-                {contentType === "tv" ? (
-                  <TableCell align="center">4K</TableCell>
-                ) : (
-                  <TableCell align="center">256 GB / 8 GB</TableCell>
-                )}
-                <TableCell align="center">
-                  {contentType === "tv" ? (
-                    <Box
-                      display="flex"
-                      flexWrap="wrap"
+              {contentLoading ? (
+                <CircularProgress
+                  color="secondary"
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
+              ) : (
+                <>
+                  {content?.length === 0 ? (
+                    <Typography
+                      variant="h5"
+                      color="error"
                       sx={{
-                        width: "170px",
-                        height: "100%",
-                        margin: "auto",
+                        position: "absolute",
+                        top: "60%",
+                        left: "50%",
+                        transform: "translateX(-50%)",
                       }}
                     >
-                      {[43, 48, 55, 66, 75, 85].map((size) => (
-                        <Box
-                          key={size}
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          sx={{
-                            width: "25px",
-                            height: "25px",
-                            border: `1px solid ${colors.light[200]}`,
-                            ml: "10px",
-                            mt: "5px",
-                          }}
-                        >
-                          {size}"
-                        </Box>
-                      ))}
-                    </Box>
+                      {contentType === "customer"
+                        ? "No Customers!"
+                        : "No Products!"}
+                    </Typography>
                   ) : (
-                    <Box
-                      display="flex"
-                      flexWrap="wrap"
-                      sx={{
-                        width: "170px",
-                        height: "100%",
-                        margin: "auto",
-                      }}
-                    >
-                      {dummyColors.map((color) => (
-                        <Tooltip
-                          key={color._id}
-                          title={color.name}
-                          placement="top"
-                          TransitionComponent={Zoom}
-                          arrow
-                        >
-                          <Box
-                            sx={{
-                              width: "20px",
-                              height: "20px",
-                              backgroundColor: color.code,
-                              border: `1px solid ${colors.light[200]}`,
-                              ml: "10px",
-                              mt: "5px",
-                            }}
-                          ></Box>
-                        </Tooltip>
+                    <>
+                      {content?.map((data) => (
+                        <Content
+                          key={data._id}
+                          data={data}
+                          loading={contentLoading}
+                          contentType={contentType}
+                        />
                       ))}
-                    </Box>
+                    </>
                   )}
-                </TableCell>
-                <TableCell align="center">22</TableCell>
-                {contentType !== "tv" && (
-                  <TableCell align="center">$859.99</TableCell>
-                )}
-                <TableCell align="right">
-                  <IconButton
-                    sx={{
-                      transition: "0.2s ease-in-out",
-                      "&:hover": { color: colors.secondary[500] },
-                    }}
-                  >
-                    <SettingsOutlinedIcon sx={{ fontSize: "1.3rem" }} />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
+                </>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -319,6 +261,12 @@ const DataTable = ({ contentType }) => {
         }
         label="Change Density"
       />
+
+      {isSizesModalOpen && <SizesConfig />}
+      {isGalleryOpen && <Gallery contentType={contentType} />}
+      {isDelProductModalOpen && (
+        <DeleteProductModal colors={colors} contentType={contentType} />
+      )}
     </Box>
   );
 };

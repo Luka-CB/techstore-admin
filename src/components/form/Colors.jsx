@@ -55,10 +55,10 @@ const Colors = ({ productColors, setColors, storageName }) => {
             }}
           >
             <Typography variant="body2" textTransform="capitalize">
-              N: {color.colorName}
+              Name: {color.colorName}
             </Typography>
             <Box variant="body2" sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="body2">C:</Typography>
+              <Typography variant="body2">Color:</Typography>
               <div
                 style={{
                   marginLeft: "5px",
@@ -70,7 +70,7 @@ const Colors = ({ productColors, setColors, storageName }) => {
                 }}
               ></div>
             </Box>
-            <Typography variant="body2">Q: {color.qty}</Typography>
+            <Typography variant="body2">Quantity: {color.qty}</Typography>
           </Box>
         </Tooltip>
       ))}

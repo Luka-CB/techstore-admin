@@ -3,7 +3,7 @@ import DataTable from "../components/DataTable";
 const Accessories = () => {
   return (
     <div>
-      <DataTable contentType="accessory" />
+      <DataTable content={[]} contentType="accessory" />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import DataTable from "../components/DataTable";
 const Computers = () => {
   return (
     <div>
-      <DataTable contentType="computer" />
+      <DataTable content={[]} contentType="computer" />
     </div>
   );
 };

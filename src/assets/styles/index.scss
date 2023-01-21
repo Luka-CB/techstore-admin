@@ -1,4 +1,5 @@
-@import "./components/DataTable", "./components/ImageDrop";
+@import "./components/DataTable", "./components/ImageDrop", "./components/Dots",
+  "./components/Gallery";
 
 * {
   margin: 0;
@@ -23,8 +24,10 @@
   }
 }
 
-.create-container {
-  .create-text {
+.create-container,
+.update-container {
+  .create-text,
+  .update-text {
     display: flex;
     align-items: center;
     background-color: #ec82b4;
@@ -46,5 +49,24 @@
       top: 50%;
       transform: translateY(-40%);
     }
+  }
+}
+
+#input-file[type="file"] {
+  display: none;
+}
+
+#input-label {
+  border: 1px solid;
+  width: 70%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f8cde11c;
   }
 }

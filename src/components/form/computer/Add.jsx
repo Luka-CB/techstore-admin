@@ -158,7 +158,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Name"
+                label="Product Name *"
                 name="name"
                 value={values.name}
                 onChange={handleChange}
@@ -170,7 +170,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Brand"
+                label="Product Brand *"
                 name="brand"
                 value={values.brand}
                 onChange={handleChange}
@@ -189,7 +189,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Type"
+                label="Product Type *"
                 name="type"
                 value={values.type}
                 onChange={handleChange}
@@ -201,7 +201,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Processor"
+                label="Product Processor *"
                 name="processor"
                 value={values.processor}
                 onChange={handleChange}
@@ -213,7 +213,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product OS"
+                label="Product OS *"
                 name="os"
                 value={values.os}
                 onChange={handleChange}
@@ -232,7 +232,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Graphics"
+                label="Product Graphics *"
                 name="graphics"
                 value={values.graphics}
                 onChange={handleChange}
@@ -244,7 +244,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Display"
+                label="Product Display *"
                 name="display"
                 value={values.display}
                 onChange={handleChange}
@@ -256,7 +256,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Memory"
+                label="Product Memory *"
                 name="memory"
                 value={values.memory}
                 onChange={handleChange}
@@ -292,7 +292,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Storage Type"
+                label="Storage Type *"
                 name="storagetype"
                 value={values.storagetype}
                 onChange={handleChange}
@@ -304,7 +304,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="SSD Interface"
+                label="SSD Interface *"
                 name="interface"
                 value={values.interface}
                 onChange={handleChange}
@@ -316,7 +316,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Storage Size"
+                label="Storage Size *"
                 type="number"
                 name="size"
                 value={values.size}
@@ -416,7 +416,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Camera"
+                label="Product Camera *"
                 name="camera"
                 value={values.camera}
                 onChange={handleChange}
@@ -428,7 +428,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Weight"
+                label="Product Weight *"
                 name="weight"
                 value={values.weight}
                 onChange={handleChange}
@@ -441,7 +441,7 @@ const AddComputer = () => {
                 color="secondary"
                 variant="outlined"
                 type="number"
-                label="Product Price"
+                label="Product Price *"
                 name="price"
                 value={values.price}
                 onChange={handleChange}

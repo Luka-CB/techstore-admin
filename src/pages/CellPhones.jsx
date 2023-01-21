@@ -3,7 +3,7 @@ import DataTable from "../components/DataTable";
 const CellPhones = () => {
   return (
     <div>
-      <DataTable contentType="cellphone" />
+      <DataTable content={[]} contentType="cellphone" />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import AddTv from "../components/form/tv/Add";
 import ForwardIcon from "@mui/icons-material/Forward";
 import AddComputer from "../components/form/computer/Add";
 import AddCellphone from "../components/form/cellphone/Add";
+import AddAccessory from "../components/form/accessory/Add";
 
 const Create = () => {
   const { pathname } = useLocation();
@@ -19,6 +20,7 @@ const Create = () => {
       {productType === "tv" && <AddTv />}
       {productType === "computer" && <AddComputer />}
       {productType === "cellphone" && <AddCellphone />}
+      {productType === "accessory" && <AddAccessory />}
     </div>
   );
 };

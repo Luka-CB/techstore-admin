@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  isModalOpen: false,
   imgError: false,
 };
 
@@ -11,9 +12,13 @@ const stateReducer = createSlice({
     toggleImageErrorState: (state, { payload }) => {
       state.imgError = payload;
     },
+    toggleIsModalOpen: (state, { payload }) => {
+      state.isModalOpen = payload;
+    },
   },
 });
 
-export const { toggleImageErrorState } = stateReducer.actions;
+export const { toggleImageErrorState, toggleIsModalOpen } =
+  stateReducer.actions;
 
 export default stateReducer.reducer;

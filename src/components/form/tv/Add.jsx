@@ -5,10 +5,7 @@ import {
   Fab,
   Paper,
   TextField,
-  Tooltip,
-  Typography,
   useTheme,
-  Zoom,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { colorPallets } from "../../../theme";
@@ -20,12 +17,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleImageErrorState } from "../../../redux/features/stateSlice";
 import AddProductLinks from "../AddProductLinks";
 import Sizes from "../Sizes";
+import { resetAddProduct } from "../../../redux/features/product/addSlice";
+import Dots from "../../Dots";
+import CustomAlert from "../../CustomAlert";
+import { resetImageData } from "../../../redux/features/imageSlice";
+import {
+  toggleErrorAlert,
+  toggleSuccessAlert,
+} from "../../../redux/features/alertSlice";
+import { addProduct } from "../../../redux/actions/productActions";
 
 const AddTv = () => {
   const theme = useTheme();
   const colors = colorPallets(theme.palette.mode);
 
-  const { isDropImageAdded } = useSelector((state) => state.image);
+  const { isDropImageAdded, dropImageData } = useSelector(
+    (state) => state.image
+  );
+  const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
+    (state) => state.addProduct
+  );
 
   const [size, setSize] = useState("");
   const [sizeErr, setSizeErr] = useState(false);
@@ -46,31 +58,51 @@ const AddTv = () => {
       dispatch(toggleImageErrorState(true));
       return;
     }
-    console.log(values);
+
+    dispatch(
+      addProduct({
+        route: "tvs",
+        productData: {
+          ...values,
+          sizes,
+          imageData: {
+            image: dropImageData.image,
+            imageName: dropImageData.name,
+          },
+        },
+      })
+    );
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        name: localStorage.getItem("formTvInfo")
-          ? JSON.parse(localStorage.getItem("formTvInfo")).name
-          : "",
-        brand: localStorage.getItem("formTvInfo")
-          ? JSON.parse(localStorage.getItem("formTvInfo")).brand
-          : "",
-        year: localStorage.getItem("formTvInfo")
-          ? JSON.parse(localStorage.getItem("formTvInfo")).year
-          : "",
-        type: localStorage.getItem("formTvInfo")
-          ? JSON.parse(localStorage.getItem("formTvInfo")).type
-          : "",
-        resolution: localStorage.getItem("formTvInfo")
-          ? JSON.parse(localStorage.getItem("formTvInfo")).resolution
-          : "",
-      },
-      validationSchema: tvFormSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleReset,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: localStorage.getItem("formTvInfo")
+        ? JSON.parse(localStorage.getItem("formTvInfo")).name
+        : "",
+      brand: localStorage.getItem("formTvInfo")
+        ? JSON.parse(localStorage.getItem("formTvInfo")).brand
+        : "",
+      year: localStorage.getItem("formTvInfo")
+        ? JSON.parse(localStorage.getItem("formTvInfo")).year
+        : "",
+      type: localStorage.getItem("formTvInfo")
+        ? JSON.parse(localStorage.getItem("formTvInfo")).type
+        : "",
+      resolution: localStorage.getItem("formTvInfo")
+        ? JSON.parse(localStorage.getItem("formTvInfo")).resolution
+        : "",
+    },
+    validationSchema: tvFormSchema,
+    onSubmit,
+  });
 
   useEffect(
     () => localStorage.setItem("formTvInfo", JSON.stringify(values)),
@@ -94,11 +126,11 @@ const AddTv = () => {
 
     setSizeExistsErr(false);
 
-    setSizes((prev) => [...prev, { size, qty, price }]);
+    setSizes((prev) => [...prev, { size: +size, qty: +qty, price: +price }]);
 
     localStorage.setItem(
       "formTvSizes",
-      JSON.stringify([...sizes, { size, qty, price }])
+      JSON.stringify([...sizes, { size: +size, qty: +qty, price: +price }])
     );
 
     setSize("");
@@ -106,8 +138,47 @@ const AddTv = () => {
     setPrice("");
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(toggleSuccessAlert(true));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(resetAddProduct());
+        handleReset();
+        localStorage.removeItem("formTvInfo");
+        localStorage.removeItem("formTvSizes");
+        dispatch(resetImageData());
+        setSizes([]);
+      }, 3000);
+    }
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (errorMsg) {
+      dispatch(toggleErrorAlert(true));
+      setTimeout(() => {
+        dispatch(toggleErrorAlert(false));
+        dispatch(resetAddProduct());
+      }, 3000);
+    }
+  }, [errorMsg, dispatch]);
+
   return (
     <Box sx={{ width: "70%", margin: "auto" }}>
+      {successAlert && (
+        <CustomAlert
+          severity="success"
+          transitionState={successAlert}
+          value={successMsg}
+        />
+      )}
+      {errorAlert && (
+        <CustomAlert
+          severity="error"
+          transitionState={errorAlert}
+          value={errorMsg}
+        />
+      )}
       <Paper
         variant={theme.palette.mode === "dark" ? "outlined" : undefined}
         elevation={12}
@@ -134,7 +205,7 @@ const AddTv = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Name"
+                label="Product Name *"
                 name="name"
                 value={values.name}
                 onChange={handleChange}
@@ -146,7 +217,7 @@ const AddTv = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Brand"
+                label="Product Brand *"
                 name="brand"
                 value={values.brand}
                 onChange={handleChange}
@@ -166,7 +237,7 @@ const AddTv = () => {
                 color="secondary"
                 variant="outlined"
                 type="number"
-                label="Product Year"
+                label="Product Year *"
                 name="year"
                 value={values.year}
                 onChange={handleChange}
@@ -178,7 +249,7 @@ const AddTv = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Type"
+                label="Product Type *"
                 name="type"
                 value={values.type}
                 onChange={handleChange}
@@ -190,7 +261,7 @@ const AddTv = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Resolution"
+                label="Product Resolution *"
                 name="resolution"
                 value={values.resolution}
                 onChange={handleChange}
@@ -280,11 +351,13 @@ const AddTv = () => {
                 mt: "50px",
                 alignSelf: "flex-end",
                 width: "150px",
-                p: "7px",
+                height: "40px",
                 fontSize: "0.8rem",
+                position: "relative",
               }}
+              disabled={isLoading}
             >
-              add product
+              {isLoading ? <Dots /> : "add product"}
             </Button>
           </form>
         </Box>

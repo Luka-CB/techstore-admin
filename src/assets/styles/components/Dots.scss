@@ -1,0 +1,47 @@
+.dots-cont {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+    border-radius: 50%;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px 12px;
+    position: relative;
+    animation: jump 0.7s infinite;
+  }
+
+  .dot-1 {
+    -webkit-animation-delay: 100ms;
+    animation-delay: 100ms;
+  }
+
+  .dot-2 {
+    -webkit-animation-delay: 200ms;
+    animation-delay: 200ms;
+  }
+
+  .dot-3 {
+    -webkit-animation-delay: 300ms;
+    animation-delay: 300ms;
+  }
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0px;
+  }
+  20% {
+    bottom: 8px;
+  }
+  40% {
+    bottom: 0px;
+  }
+}

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import { ColorModeContext, colorPallets } from "../theme";
 import {
@@ -29,7 +29,9 @@ import TvOutlinedIcon from "@mui/icons-material/TvOutlined";
 import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import HeadphonesBatteryOutlinedIcon from "@mui/icons-material/HeadphonesBatteryOutlined";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAdmin } from "../redux/actions/adminActions";
 
 const drawerWidth = 250;
 
@@ -105,6 +107,11 @@ const SideAndTopBar = () => {
   const colors = colorPallets(theme.palette.mode);
   const [open, setOpen] = useState(false);
 
+  const { isSuccess } = useSelector((state) => state.logout);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -112,6 +119,13 @@ const SideAndTopBar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+      window.location.reload();
+    }
+  }, [isSuccess]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -163,7 +177,10 @@ const SideAndTopBar = () => {
               Techstore Admin
             </Typography>
             <Box display="flex" alignItems="center">
-              <IconButton sx={{ display: "flex", alignItems: "flex-end" }}>
+              <IconButton
+                sx={{ display: "flex", alignItems: "flex-end" }}
+                onClick={() => dispatch(logoutAdmin())}
+              >
                 <Typography mr={0.3}>Sign Out</Typography>
                 <AccountCircleOutlinedIcon sx={{ fontSize: "1.3rem" }} />
               </IconButton>
