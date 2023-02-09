@@ -13,15 +13,28 @@ import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import AddProductLinks from "../AddProductLinks";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleImageErrorState } from "../../../redux/features/stateSlice";
+import {
+  toggleImageColorNameErrorState,
+  toggleImageErrorState,
+} from "../../../redux/features/stateSlice";
 import { useFormik } from "formik";
 import Colors from "../Colors";
 import CameraInfo from "./CameraInfo";
 import { cellFormSchema } from "../../../utils/validations";
 import {
+  resetCameraInfo,
   toggleMainCamInfoErrState,
   toggleSelfieCamInfoErrState,
 } from "../../../redux/features/cameraInfoSlice";
+import { addProduct } from "../../../redux/actions/productActions";
+import {
+  toggleErrorAlert,
+  toggleSuccessAlert,
+} from "../../../redux/features/alertSlice";
+import { resetAddProduct } from "../../../redux/features/product/addSlice";
+import { resetImageData } from "../../../redux/features/imageSlice";
+import CustomAlert from "../../CustomAlert";
+import Dots from "../../Dots";
 
 const AddCellphone = () => {
   const theme = useTheme();
@@ -39,9 +52,15 @@ const AddCellphone = () => {
       : []
   );
 
-  const { isDropImageAdded } = useSelector((state) => state.image);
+  const { isDropImageAdded, dropImageData } = useSelector(
+    (state) => state.image
+  );
   const { mainCamInfo, selfieCamInfo } = useSelector(
     (state) => state.cameraInfo
+  );
+  const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
+    (state) => state.addProduct
   );
 
   const dispatch = useDispatch();
@@ -61,89 +80,116 @@ const AddCellphone = () => {
       dispatch(toggleImageErrorState(true));
       return;
     }
-    console.log(values);
+
+    if (!dropImageData?.colorName) {
+      dispatch(toggleImageColorNameErrorState(true));
+      return;
+    }
+
+    dispatch(
+      addProduct({
+        route: "cellphones",
+        productData: {
+          ...values,
+          mainCamInfo,
+          selfieCamInfo,
+          colors: cellColors,
+          imageData: {
+            image: dropImageData.image,
+            imageName: dropImageData.name,
+            imageColorName: dropImageData.colorName,
+          },
+        },
+      })
+    );
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        name: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).name
-          : "",
-        brand: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).brand
-          : "",
-        year: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).year
-          : "",
-        network: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).network
-          : "",
-        dimensions: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).dimensions
-          : "",
-        weight: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).weight
-          : "",
-        sim: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).sim
-          : "",
-        displayType: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).displayType
-          : "",
-        displaySize: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).displaySize
-          : "",
-        resolution: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).resolution
-          : "",
-        protection: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).protection
-          : "",
-        os: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).os
-          : "",
-        chipset: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).chipset
-          : "",
-        cpu: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).cpu
-          : "",
-        gpu: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).gpu
-          : "",
-        cardSlot: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).cardSlot
-          : "",
-        internalMemory: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).internalMemory
-          : "",
-        ram: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).ram
-          : "",
-        mainCameraFeatures: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).mainCameraFeatures
-          : "",
-        mainCameraVideo: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).mainCameraVideo
-          : "",
-        selfieCameraFeatures: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo"))
-              .selfieCameraFeatures
-          : "",
-        selfieCameraVideo: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).selfieCameraVideo
-          : "",
-        battery: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).battery
-          : "",
-        price: localStorage.getItem("formCellInfo")
-          ? JSON.parse(localStorage.getItem("formCellInfo")).price
-          : "",
-      },
-      validationSchema: cellFormSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleReset,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).name
+        : "",
+      brand: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).brand
+        : "",
+      year: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).year
+        : "",
+      network: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).network
+        : "",
+      dimensions: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).dimensions
+        : "",
+      weight: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).weight
+        : "",
+      sim: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).sim
+        : "",
+      displayType: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).displayType
+        : "",
+      displaySize: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).displaySize
+        : "",
+      resolution: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).resolution
+        : "",
+      protection: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).protection
+        : "",
+      os: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).os
+        : "",
+      chipset: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).chipset
+        : "",
+      cpu: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).cpu
+        : "",
+      gpu: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).gpu
+        : "",
+      cardSlot: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).cardSlot
+        : "",
+      internalMemory: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).internalMemory
+        : "",
+      ram: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).ram
+        : "",
+      mainCameraFeatures: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).mainCameraFeatures
+        : "",
+      mainCameraVideo: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).mainCameraVideo
+        : "",
+      selfieCameraFeatures: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).selfieCameraFeatures
+        : "",
+      selfieCameraVideo: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).selfieCameraVideo
+        : "",
+      battery: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).battery
+        : "",
+      price: localStorage.getItem("formCellInfo")
+        ? JSON.parse(localStorage.getItem("formCellInfo")).price
+        : "",
+    },
+    validationSchema: cellFormSchema,
+    onSubmit,
+  });
 
   useEffect(
     () => localStorage.setItem("formCellInfo", JSON.stringify(values)),
@@ -167,11 +213,25 @@ const AddCellphone = () => {
 
     setColorNameExistsErr(false);
 
-    setCellColors((prev) => [...prev, { colorName, colorCode, qty }]);
+    const modifiedColorName =
+      colorName &&
+      colorName
+        .toLowerCase()
+        .split(" ")
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(" ");
+
+    setCellColors((prev) => [
+      ...prev,
+      { name: modifiedColorName, code: colorCode, qty: +qty },
+    ]);
 
     localStorage.setItem(
       "formCellColors",
-      JSON.stringify([...cellColors, { colorName, colorCode, qty }])
+      JSON.stringify([
+        ...cellColors,
+        { name: modifiedColorName, code: colorCode, qty: +qty },
+      ])
     );
 
     setColorName("");
@@ -179,16 +239,57 @@ const AddCellphone = () => {
     setQty(0);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(toggleSuccessAlert(true));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(resetAddProduct());
+        handleReset();
+        localStorage.removeItem("formCellInfo");
+        localStorage.removeItem("formCellColors");
+        localStorage.removeItem("cameraInfo");
+        localStorage.removeItem("selfieCameraInfo");
+        dispatch(resetImageData());
+        dispatch(resetCameraInfo());
+        setCellColors([]);
+      }, 3000);
+    }
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (errorMsg) {
+      dispatch(toggleErrorAlert(true));
+      setTimeout(() => {
+        dispatch(toggleErrorAlert(false));
+        dispatch(resetAddProduct());
+      }, 3000);
+    }
+  }, [errorMsg, dispatch]);
+
   return (
     <Box sx={{ width: "70%", margin: "20px auto" }}>
+      {successAlert && (
+        <CustomAlert
+          severity="success"
+          transitionState={successAlert}
+          value={successMsg}
+        />
+      )}
+      {errorAlert && (
+        <CustomAlert
+          severity="error"
+          transitionState={errorAlert}
+          value={errorMsg}
+        />
+      )}
       <Paper
-        variant={theme.palette.mode === "dark" ? "outlined" : undefined}
-        elevation={theme.palette.mode === "dark" ? 0 : 12}
+        variant="outlined"
         sx={{ minHeight: "70vh", p: "15px 15px 30px 15px" }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <AddProductLinks excludeLink="cellphone" />
-          <ImageDrop />
+          <ImageDrop contentType="cellphone" />
           <form
             onSubmit={handleSubmit}
             style={{
@@ -638,12 +739,14 @@ const AddCellphone = () => {
               sx={{
                 mt: "50px",
                 alignSelf: "flex-end",
-                width: "150px",
+                width: 150,
+                height: 40,
                 p: "7px",
                 fontSize: "0.8rem",
               }}
+              disabled={isLoading}
             >
-              add product
+              {isLoading ? <Dots /> : "add product"}
             </Button>
           </form>
         </Box>

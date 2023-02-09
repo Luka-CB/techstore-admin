@@ -14,7 +14,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import { tvFormSchema } from "../../../utils/validations";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleImageErrorState } from "../../../redux/features/stateSlice";
+import {
+  toggleImageColorNameErrorState,
+  toggleImageErrorState,
+} from "../../../redux/features/stateSlice";
 import AddProductLinks from "../AddProductLinks";
 import Sizes from "../Sizes";
 import { resetAddProduct } from "../../../redux/features/product/addSlice";
@@ -59,6 +62,11 @@ const AddTv = () => {
       return;
     }
 
+    if (!dropImageData?.colorName) {
+      dispatch(toggleImageColorNameErrorState(true));
+      return;
+    }
+
     dispatch(
       addProduct({
         route: "tvs",
@@ -68,6 +76,7 @@ const AddTv = () => {
           imageData: {
             image: dropImageData.image,
             imageName: dropImageData.name,
+            imageColorName: dropImageData.colorName,
           },
         },
       })
@@ -180,8 +189,7 @@ const AddTv = () => {
         />
       )}
       <Paper
-        variant={theme.palette.mode === "dark" ? "outlined" : undefined}
-        elevation={12}
+        variant="outlined"
         sx={{ minHeight: "70vh", p: "15px 15px 30px 15px" }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">

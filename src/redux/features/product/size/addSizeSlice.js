@@ -6,6 +6,7 @@ const initialState = {
   isSuccess: false,
   successMsg: "",
   errorMsg: "",
+  addedSize: {},
 };
 
 const addProductSizeReducer = createSlice({
@@ -22,6 +23,7 @@ const addProductSizeReducer = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
+        state.addedSize = payload.addedSize;
       }),
       addCase(addProductSize.rejected, (state, { payload }) => {
         state.isLoading = false;

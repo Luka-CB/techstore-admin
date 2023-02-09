@@ -4,18 +4,24 @@ import { useDropzone } from "react-dropzone";
 import { colorPallets } from "../theme";
 import { partial } from "filesize";
 import { useDispatch, useSelector } from "react-redux";
-import { addDropImageData } from "../redux/features/imageSlice";
-import { toggleImageErrorState } from "../redux/features/stateSlice";
+import {
+  addDropImageData,
+  setDropImageColorName,
+} from "../redux/features/imageSlice";
+import {
+  toggleImageColorNameErrorState,
+  toggleImageErrorState,
+} from "../redux/features/stateSlice";
 
 const size = partial({ base: 2, standard: "jedec" });
 
-const ImageDrop = () => {
+const ImageDrop = ({ contentType }) => {
   const dispatch = useDispatch();
 
   const { dropImageData, isDropImageAdded } = useSelector(
     (state) => state.image
   );
-  const { imgError } = useSelector((state) => state.states);
+  const { imgError, imgColorNameError } = useSelector((state) => state.states);
 
   const theme = useTheme();
   const colors = colorPallets(theme.palette.mode);
@@ -53,7 +59,11 @@ const ImageDrop = () => {
   }, [dispatch, isDropImageAdded]);
 
   return (
-    <div className="drop-container">
+    <div
+      className={
+        contentType === "cellphone" ? "cell-drop-container" : "drop-container"
+      }
+    >
       <div
         {...getRootProps()}
         className="dropzone"
@@ -85,11 +95,24 @@ const ImageDrop = () => {
       >
         <input {...getInputProps()} />
         {dropImageData.image ? (
-          <img
-            src={dropImageData.image}
-            alt=""
-            id={isDragActive ? "dropzone-image-active" : "dropzone-image"}
-          />
+          <div className="drop-image-wrapper">
+            <img
+              src={dropImageData.image}
+              alt=""
+              id={isDragActive ? "dropzone-image-active" : "dropzone-image"}
+            />
+            <div className="color-name" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="text"
+                id={imgColorNameError ? "name-input-error" : "name-input"}
+                placeholder="Image Color Name"
+                onChange={(e) => {
+                  dispatch(setDropImageColorName(e.target.value));
+                  dispatch(toggleImageColorNameErrorState(false));
+                }}
+              />
+            </div>
+          </div>
         ) : (
           <>
             {isDragActive ? (
@@ -132,7 +155,10 @@ const ImageDrop = () => {
       </div>
       {dropImageData.name && (
         <Box display="flex" justifyContent="space-between" p="5px">
-          <Typography color={colors.light[200]} sx={{ fontSize: "0.8rem" }}>
+          <Typography
+            color={colors.light[200]}
+            sx={{ fontSize: "0.8rem", mr: 1 }}
+          >
             {dropImageData.name}
           </Typography>
           <Box>

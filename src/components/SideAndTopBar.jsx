@@ -32,6 +32,8 @@ import HeadphonesBatteryOutlinedIcon from "@mui/icons-material/HeadphonesBattery
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAdmin } from "../redux/actions/adminActions";
+import { removeAllCheckItems } from "../redux/features/checkboxSlice";
+import { resetFilter } from "../redux/features/filterSlice";
 
 const drawerWidth = 250;
 
@@ -127,6 +129,11 @@ const SideAndTopBar = () => {
     }
   }, [isSuccess]);
 
+  const handleClickOnItem = () => {
+    dispatch(removeAllCheckItems());
+    dispatch(resetFilter());
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
@@ -221,6 +228,7 @@ const SideAndTopBar = () => {
             <ListItem
               disablePadding
               sx={{ display: "block", marginTop: "10px" }}
+              onClick={handleClickOnItem}
             >
               <ListItemButton
                 sx={{
@@ -252,7 +260,11 @@ const SideAndTopBar = () => {
             </ListItem>
           </NavLink>
           <NavLink to={"/customers"} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -284,7 +296,11 @@ const SideAndTopBar = () => {
           </NavLink>
           <Divider />
           <NavLink to={"/tvs"} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -315,7 +331,11 @@ const SideAndTopBar = () => {
             </ListItem>
           </NavLink>
           <NavLink to={"/computers"} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -346,7 +366,11 @@ const SideAndTopBar = () => {
             </ListItem>
           </NavLink>
           <NavLink to={"/cellphones"} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -377,7 +401,11 @@ const SideAndTopBar = () => {
             </ListItem>
           </NavLink>
           <NavLink to={"/accessories"} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,

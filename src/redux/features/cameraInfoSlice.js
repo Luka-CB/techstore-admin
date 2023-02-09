@@ -17,6 +17,8 @@ const cameraInfoReducer = createSlice({
   name: "cameraInfoReducer",
   initialState,
   reducers: {
+    resetCameraInfo: () => initialState,
+
     setMainCamInfo: (state, { payload }) => {
       state.mainCamInfo = payload;
     },
@@ -34,6 +36,7 @@ const cameraInfoReducer = createSlice({
 });
 
 export const {
+  resetCameraInfo,
   setMainCamInfo,
   setSelfieCamInfo,
   toggleMainCamInfoErrState,

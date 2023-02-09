@@ -16,10 +16,9 @@ export const computerFormSchema = yup.object().shape({
   os: yup.string().required("Please Fill in the Field!"),
   graphics: yup.string().required("Please Fill in the Field!"),
   display: yup.string().required("Please Fill in the Field!"),
-  memory: yup.string().required("Please Fill in the Field!"),
+  ram: yup.string().required("Please Fill in the Field!"),
   name: yup.string().required("Please Fill in the Field!"),
   storagetype: yup.string().required("Please Fill in the Field!"),
-  interface: yup.string().required("Please Fill in the Field!"),
   size: yup.number().required("Please Fill in the Field!"),
   camera: yup.string().required("Please Fill in the Field!"),
   weight: yup.string().required("Please Fill in the Field!"),
@@ -54,10 +53,9 @@ export const cellFormSchema = yup.object().shape({
 });
 
 export const accessoryFormSchema = yup.object().shape({
-  category: yup.string().required("Please Fill in the Field!"),
   name: yup.string().required("Please Fill in the Field!"),
   brand: yup.string().required("Please Fill in the Field!"),
-  type: yup.string().required("Please Fill in the Field!"),
-  description: yup.string().required("Please Fill in the Field!"),
+  category: yup.string().required("Please Fill in the Field!"),
   price: yup.number().required("Please Fill in the Field!"),
+  description: yup.string().required("Please Fill in the Field!"),
 });

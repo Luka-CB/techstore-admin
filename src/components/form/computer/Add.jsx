@@ -14,9 +14,21 @@ import { colorPallets } from "../../../theme";
 import ImageDrop from "../../ImageDrop";
 import AddIcon from "@mui/icons-material/Add";
 import AddProductLinks from "../AddProductLinks";
-import { toggleImageErrorState } from "../../../redux/features/stateSlice";
+import {
+  toggleImageColorNameErrorState,
+  toggleImageErrorState,
+} from "../../../redux/features/stateSlice";
 import Colors from "../Colors";
 import { computerFormSchema } from "../../../utils/validations";
+import CustomAlert from "../../CustomAlert";
+import {
+  toggleErrorAlert,
+  toggleSuccessAlert,
+} from "../../../redux/features/alertSlice";
+import { resetAddProduct } from "../../../redux/features/product/addSlice";
+import { resetImageData } from "../../../redux/features/imageSlice";
+import Dots from "../../Dots";
+import { addProduct } from "../../../redux/actions/productActions";
 
 const AddComputer = () => {
   const theme = useTheme();
@@ -34,7 +46,13 @@ const AddComputer = () => {
       : []
   );
 
-  const { isDropImageAdded } = useSelector((state) => state.image);
+  const { isDropImageAdded, dropImageData } = useSelector(
+    (state) => state.image
+  );
+  const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
+    (state) => state.addProduct
+  );
 
   const dispatch = useDispatch();
 
@@ -43,58 +61,84 @@ const AddComputer = () => {
       dispatch(toggleImageErrorState(true));
       return;
     }
-    console.log(values);
+
+    if (!dropImageData?.colorName) {
+      dispatch(toggleImageColorNameErrorState(true));
+      return;
+    }
+
+    dispatch(
+      addProduct({
+        route: "computers",
+        productData: {
+          ...values,
+          colors: computerColors,
+          imageData: {
+            image: dropImageData.image,
+            imageName: dropImageData.name,
+            imageColorName: dropImageData.colorName,
+          },
+        },
+      })
+    );
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        name: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).name
-          : "",
-        brand: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).brand
-          : "",
-        type: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).type
-          : "",
-        processor: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).processor
-          : "",
-        os: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).os
-          : "",
-        graphics: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).graphics
-          : "",
-        display: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).display
-          : "",
-        memory: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).memory
-          : "",
-        storagetype: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).storagetype
-          : "",
-        interface: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).interface
-          : "",
-        size: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).size
-          : "",
-        camera: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).camera
-          : "",
-        weight: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).weight
-          : "",
-        price: localStorage.getItem("formCompInfo")
-          ? JSON.parse(localStorage.getItem("formCompInfo")).price
-          : "",
-      },
-      validationSchema: computerFormSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleReset,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).name
+        : "",
+      brand: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).brand
+        : "",
+      type: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).type
+        : "",
+      processor: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).processor
+        : "",
+      os: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).os
+        : "",
+      graphics: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).graphics
+        : "",
+      display: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).display
+        : "",
+      ram: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).ram
+        : "",
+      storagetype: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).storagetype
+        : "",
+      interface: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).interface
+        : "",
+      size: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).size
+        : "",
+      camera: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).camera
+        : "",
+      weight: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).weight
+        : "",
+      price: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).price
+        : "",
+    },
+    validationSchema: computerFormSchema,
+    onSubmit,
+  });
 
   useEffect(
     () => localStorage.setItem("formCompInfo", JSON.stringify(values)),
@@ -111,18 +155,32 @@ const AddComputer = () => {
       return;
     }
 
-    if (computerColors.some((color) => color.colorName === colorName)) {
+    if (computerColors.some((color) => color.name === colorName)) {
       setColorNameExistsErr(true);
       return;
     }
 
     setColorNameExistsErr(false);
 
-    setComputerColors((prev) => [...prev, { colorName, colorCode, qty }]);
+    const modifiedColorName =
+      colorName &&
+      colorName
+        .toLowerCase()
+        .split(" ")
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(" ");
+
+    setComputerColors((prev) => [
+      ...prev,
+      { name: modifiedColorName, code: colorCode, qty: +qty },
+    ]);
 
     localStorage.setItem(
       "formComputerColors",
-      JSON.stringify([...computerColors, { colorName, colorCode, qty }])
+      JSON.stringify([
+        ...computerColors,
+        { name: modifiedColorName, code: colorCode, qty: +qty },
+      ])
     );
 
     setColorName("");
@@ -130,11 +188,49 @@ const AddComputer = () => {
     setQty(0);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(toggleSuccessAlert(true));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(resetAddProduct());
+        handleReset();
+        localStorage.removeItem("formCompInfo");
+        localStorage.removeItem("formComputerColors");
+        dispatch(resetImageData());
+        setComputerColors([]);
+      }, 3000);
+    }
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (errorMsg) {
+      dispatch(toggleErrorAlert(true));
+      setTimeout(() => {
+        dispatch(toggleErrorAlert(false));
+        dispatch(resetAddProduct());
+      }, 3000);
+    }
+  }, [errorMsg, dispatch]);
+
   return (
     <Box sx={{ width: "70%", margin: "20px auto" }}>
+      {successAlert && (
+        <CustomAlert
+          severity="success"
+          transitionState={successAlert}
+          value={successMsg}
+        />
+      )}
+      {errorAlert && (
+        <CustomAlert
+          severity="error"
+          transitionState={errorAlert}
+          value={errorMsg}
+        />
+      )}
       <Paper
-        variant={theme.palette.mode === "dark" ? "outlined" : undefined}
-        elevation={12}
+        variant="outlined"
         sx={{ minHeight: "70vh", p: "15px 15px 30px 15px" }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
@@ -256,13 +352,13 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Memory *"
-                name="memory"
-                value={values.memory}
+                label="Product Ram *"
+                name="ram"
+                value={values.ram}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.memory && Boolean(errors.memory)}
-                helperText={touched.memory && errors.memory}
+                error={touched.ram && Boolean(errors.ram)}
+                helperText={touched.ram && errors.ram}
                 sx={{ width: "30%" }}
               />
             </Box>
@@ -304,13 +400,10 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="SSD Interface *"
+                label="SSD Interface"
                 name="interface"
                 value={values.interface}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.interface && Boolean(errors.interface)}
-                helperText={touched.interface && errors.interface}
                 sx={{ width: "25%" }}
               />
               <TextField
@@ -460,11 +553,13 @@ const AddComputer = () => {
                 mt: "50px",
                 alignSelf: "flex-end",
                 width: "150px",
+                height: 40,
                 p: "7px",
                 fontSize: "0.8rem",
               }}
+              disabled={isLoading}
             >
-              add product
+              {isLoading ? <Dots /> : "add product"}
             </Button>
           </form>
         </Box>

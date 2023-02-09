@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ColorModeContext, useMode } from "./theme";
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import RouteWrapper from "./components/RouteWrapper";
 import SideBar from "./components/SideAndTopBar";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
@@ -13,6 +14,7 @@ import Create from "./pages/Create";
 import { useSelector } from "react-redux";
 import SignIn from "./components/SignIn";
 import Update from "./pages/Update";
+import Details from "./pages/Details";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -41,16 +43,22 @@ const App = () => {
           </div>
           <div className="col-2">
             <div className="page-contents">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/customers" element={<Customers />} />
-                <Route path="/tvs" element={<TVs />} />
-                <Route path="/computers" element={<Computers />} />
-                <Route path="/cellphones" element={<CellPhones />} />
-                <Route path="/accessories" element={<Accessories />} />
-                <Route path="/create/:product" element={<Create />} />
-                <Route path="/update/:product/:name" element={<Update />} />
-              </Routes>
+              <RouteWrapper>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/tvs" element={<TVs />} />
+                  <Route path="/computers" element={<Computers />} />
+                  <Route path="/cellphones" element={<CellPhones />} />
+                  <Route path="/accessories" element={<Accessories />} />
+                  <Route path="/create/:product" element={<Create />} />
+                  <Route path="/update/:product/:name" element={<Update />} />
+                  <Route
+                    path="/details/:contentType/:id"
+                    element={<Details />}
+                  />
+                </Routes>
+              </RouteWrapper>
             </div>
           </div>
         </div>

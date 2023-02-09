@@ -1,10 +1,33 @@
 @import "./components/DataTable", "./components/ImageDrop", "./components/Dots",
-  "./components/Gallery";
+  "./components/Gallery", "./components/Details";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(199, 199, 199);
+  border-radius: 10px;
+  background-color: rgb(182, 182, 182);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(100, 99, 99);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(250, 250, 250);
 }
 
 .app {
@@ -28,6 +51,7 @@
 .update-container {
   .create-text,
   .update-text {
+    z-index: 100;
     display: flex;
     align-items: center;
     background-color: #ec82b4;

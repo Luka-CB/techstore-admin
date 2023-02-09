@@ -1,9 +1,9 @@
 import { useLocation } from "react-router-dom";
 import UpdateTv from "../components/form/tv/Update";
 import ForwardIcon from "@mui/icons-material/Forward";
-import AddComputer from "../components/form/computer/Add";
-import AddCellphone from "../components/form/cellphone/Add";
-import AddAccessory from "../components/form/accessory/Add";
+import UpdateComputer from "../components/form/computer/Update";
+import UpdateCellphone from "../components/form/cellphone/Update";
+import UpdateAccessory from "../components/form/accessory/Update";
 
 const Update = () => {
   const { pathname } = useLocation();
@@ -18,9 +18,9 @@ const Update = () => {
         </div>
       </div>
       {productType === "tv" && <UpdateTv />}
-      {/* {productType === "computer" && <AddComputer />}
-      {productType === "cellphone" && <AddCellphone />}
-      {productType === "accessory" && <AddAccessory />} */}
+      {productType === "computer" && <UpdateComputer />}
+      {productType === "cellphone" && <UpdateCellphone />}
+      {productType === "accessory" && <UpdateAccessory />}
     </div>
   );
 };

@@ -5,7 +5,7 @@ export const addProductSize = createAsyncThunk(
   "ADD_PRODUCT_SIZE",
   async ({ route, size }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/${route}/add-size`, size, {
+      const { data } = await axios.put(`/api/admin/${route}/add-size`, size, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
@@ -26,7 +26,7 @@ export const editProductSize = createAsyncThunk(
   "EDIT_PRODUCT_SIZE",
   async ({ route, size }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/${route}/edit-size`, size, {
+      const { data } = await axios.put(`/api/admin/${route}/edit-size`, size, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
@@ -48,7 +48,7 @@ export const deleteProductSize = createAsyncThunk(
   async ({ route, ids }, thunkAPI) => {
     try {
       const { data } = await axios.put(
-        `/api/${route}/delete-size?productId=${ids.productId}&sizeId=${ids.sizeId}`,
+        `/api/admin/${route}/delete-size?productId=${ids.productId}&sizeId=${ids.sizeId}`,
         {},
         {
           headers: { "Content-Type": "application/json" },

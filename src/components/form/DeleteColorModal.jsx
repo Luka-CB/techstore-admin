@@ -1,37 +1,39 @@
 import { Box, Button, Paper, Typography, Zoom } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, getProducts } from "../redux/actions/productActions";
+import { getProducts } from "../../redux/actions/productActions";
+import { deleteProductColor } from "../../redux/actions/productColorActions";
 import {
-  toggleSuccessAlert,
   toggleErrorAlert,
-} from "../redux/features/alertSlice";
-import { toggleDelProductModal } from "../redux/features/modals/delProductModalSlice";
-import { resetDeleteProduct } from "../redux/features/product/deleteSlice";
-import CustomAlert from "./CustomAlert";
-import Dots from "./Dots";
+  toggleSuccessAlert,
+} from "../../redux/features/alertSlice";
+import { removeStoreColor } from "../../redux/features/modals/colorsModalSlice";
+import { toggleDelColorModal } from "../../redux/features/modals/delColorModalSlice";
+import { resetDeleteProductColor } from "../../redux/features/product/color/deleteColorSlice";
+import CustomAlert from "../CustomAlert";
+import Dots from "../Dots";
 
-const DeleteProductModal = ({ colors, contentType }) => {
+const DeleteColorModal = ({ colors, route }) => {
   const { successAlert, errorAlert } = useSelector((state) => state.alert);
-  const { isDelProductModalOpen, data } = useSelector(
-    (state) => state.delProductModal
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
+  const { isDelColorModalOpen, data } = useSelector(
+    (state) => state.delColorModal
   );
   const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
-    (state) => state.deleteProduct
+    (state) => state.deleteColor
   );
 
   const dispatch = useDispatch();
-
-  const route = contentType === "accessory" ? "accessories" : `${contentType}s`;
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(toggleSuccessAlert(true));
       setTimeout(() => {
         dispatch(toggleSuccessAlert(false));
-        dispatch(toggleDelProductModal(false));
-        dispatch(resetDeleteProduct());
-        dispatch(getProducts({ route }));
+        dispatch(toggleDelColorModal(false));
+        dispatch(resetDeleteProductColor());
+        dispatch(getProducts({ route, searchQ, page, perPage }));
+        dispatch(removeStoreColor(data.colorId));
       }, 3000);
     }
   }, [isSuccess, dispatch]);
@@ -41,7 +43,7 @@ const DeleteProductModal = ({ colors, contentType }) => {
       dispatch(toggleErrorAlert(true));
       setTimeout(() => {
         dispatch(toggleErrorAlert(false));
-        dispatch(resetDeleteProduct());
+        dispatch(resetDeleteProductColor());
       }, 3000);
     }
   }, [errorMsg, dispatch]);
@@ -56,7 +58,7 @@ const DeleteProductModal = ({ colors, contentType }) => {
         height: "100%",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}
-      onClick={() => dispatch(toggleDelProductModal(false))}
+      onClick={() => dispatch(toggleDelColorModal(false))}
     >
       <div
         style={{
@@ -82,7 +84,7 @@ const DeleteProductModal = ({ colors, contentType }) => {
             transitionState={errorAlert}
           />
         )}
-        <Zoom in={isDelProductModalOpen}>
+        <Zoom in={isDelColorModalOpen}>
           <Paper
             variant="outlined"
             sx={{
@@ -112,9 +114,9 @@ const DeleteProductModal = ({ colors, contentType }) => {
                 }}
                 onClick={() =>
                   dispatch(
-                    deleteProduct({
+                    deleteProductColor({
                       route,
-                      productId: data.productId,
+                      ids: { productId: data.productId, colorId: data.colorId },
                     })
                   )
                 }
@@ -125,13 +127,13 @@ const DeleteProductModal = ({ colors, contentType }) => {
                 variant="outlined"
                 type="button"
                 color="warning"
-                disabled={isLoading}
                 sx={{
                   width: 120,
                   height: 30,
                   fontSize: "0.8rem",
                 }}
-                onClick={() => dispatch(toggleDelProductModal(false))}
+                onClick={() => dispatch(toggleDelColorModal(false))}
+                disabled={isLoading}
               >
                 no
               </Button>
@@ -143,4 +145,4 @@ const DeleteProductModal = ({ colors, contentType }) => {
   );
 };
 
-export default DeleteProductModal;
+export default DeleteColorModal;

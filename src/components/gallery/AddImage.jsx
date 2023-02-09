@@ -1,10 +1,12 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import placeholder from "../../assets/images/placeholder.jpg";
+import placeholderCell from "../../assets/images/placeholder-cell.png";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { partial } from "filesize";
 import {
+  setImageColorName,
   setImageData,
   toggleUploadImageModal,
 } from "../../redux/features/modals/uploadModalSlice";
@@ -24,6 +26,7 @@ const size = partial({ base: 2, standard: "jedec" });
 
 const AddImage = ({ colors, productId, route }) => {
   const { imageData } = useSelector((state) => state.uploadModal);
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
   const { isLoading, isSuccess, errorMsg, addedImage } = useSelector(
     (state) => state.addImage
   );
@@ -54,7 +57,7 @@ const AddImage = ({ colors, productId, route }) => {
         dispatch(toggleUploadImageModal(false));
         dispatch(setImageData({}));
         dispatch(resetAddImage());
-        dispatch(getProducts({ route }));
+        dispatch(getProducts({ route, searchQ, page, perPage }));
         dispatch(updateGalleryData(addedImage));
       }, 3000);
     }
@@ -72,8 +75,17 @@ const AddImage = ({ colors, productId, route }) => {
 
   return (
     <Box>
-      <Box sx={{ height: 240 }}>
-        <Box sx={{ width: 300, height: 170 }}>
+      <Box
+        sx={{
+          height: route === "cellphones" ? 500 : 240,
+        }}
+      >
+        <Box
+          sx={{
+            width: 300,
+            height: route === "cellphones" ? "auto" : 170,
+          }}
+        >
           {imageData.image ? (
             <img
               src={imageData.image}
@@ -82,16 +94,33 @@ const AddImage = ({ colors, productId, route }) => {
             />
           ) : (
             <img
-              src={placeholder}
+              src={route === "cellphones" ? placeholderCell : placeholder}
               alt="placeholder image"
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           )}
         </Box>
-        <Box p={0.5}>
-          <Typography sx={{ opacity: 0.9 }}>{imageData.name}</Typography>
-          <Typography sx={{ opacity: 0.6 }}>{imageData.size}</Typography>
-        </Box>
+        {imageData?.image && (
+          <Box
+            p={0.5}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box width={180}>
+              <Typography sx={{ opacity: 0.9 }}>{imageData.name}</Typography>
+              <Typography sx={{ opacity: 0.6 }}>{imageData.size}</Typography>
+            </Box>
+            {route !== "tvs" && (
+              <TextField
+                label="add color name"
+                variant="standard"
+                color="secondary"
+                onChange={(e) => dispatch(setImageColorName(e.target.value))}
+              />
+            )}
+          </Box>
+        )}
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" mt={1}>
         {!imageData.image ? (

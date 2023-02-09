@@ -13,10 +13,14 @@ const imageReducer = createSlice({
       state.dropImageData = payload;
       state.isDropImageAdded = true;
     },
+    setDropImageColorName: (state, { payload }) => {
+      state.dropImageData.colorName = payload;
+    },
     resetImageData: () => initialState,
   },
 });
 
-export const { addDropImageData, resetImageData } = imageReducer.actions;
+export const { addDropImageData, setDropImageColorName, resetImageData } =
+  imageReducer.actions;
 
 export default imageReducer.reducer;

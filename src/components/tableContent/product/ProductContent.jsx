@@ -14,60 +14,43 @@ import {
   useTheme,
   Zoom,
 } from "@mui/material";
-import { colorPallets } from "../theme";
+import { colorPallets } from "../../../theme";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CollectionsIcon from "@mui/icons-material/Collections";
-import { toggleIsModalOpen } from "../redux/features/stateSlice";
-import { setGalleryData, toggleGallery } from "../redux/features/gallerySlice";
-import placeholder from "../assets/images/placeholder.jpg";
-import { setProductInfo } from "../redux/features/updProductInfoSlice";
+import InfoIcon from "@mui/icons-material/Info";
+import { toggleIsModalOpen } from "../../../redux/features/stateSlice";
+import {
+  setGalleryData,
+  toggleGallery,
+} from "../../../redux/features/gallerySlice";
+import placeholder from "../../../assets/images/placeholder.jpg";
+import placeholderCell from "../../../assets/images/placeholder-cell.png";
+import { setProductInfo } from "../../../redux/features/updProductInfoSlice";
 import {
   setSizesdata,
   toggleSizesModal,
-} from "../redux/features/modals/sizesModalSlice";
+} from "../../../redux/features/modals/sizesModalSlice";
 import {
   setDelProductModalData,
   toggleDelProductModal,
-} from "../redux/features/modals/delProductModalSlice";
-import { addCheckItem, removeCheckItem } from "../redux/features/checkboxSlice";
+} from "../../../redux/features/modals/delProductModalSlice";
+import {
+  addCheckItem,
+  removeCheckItem,
+} from "../../../redux/features/checkboxSlice";
+import {
+  setColorsData,
+  toggleColorsModal,
+} from "../../../redux/features/modals/colorsModalSlice";
+import {
+  setMainCamInfo,
+  setSelfieCamInfo,
+} from "../../../redux/features/cameraInfoSlice";
 
-const dummyColors = [
-  {
-    _id: 1,
-    name: "Graphite",
-    code: "#1a2129",
-    qty: 7,
-  },
-  {
-    _id: 2,
-    name: "Silver",
-    code: "#f9f4f0",
-    qty: 0,
-  },
-  {
-    _id: 3,
-    name: "Gold",
-    code: "#fee2de",
-    qty: 4,
-  },
-  {
-    _id: 4,
-    name: "Sierra Blue",
-    code: "#256080",
-    qty: 8,
-  },
-  {
-    _id: 5,
-    name: "Alpine Green",
-    code: "#586958",
-    qty: 3,
-  },
-];
-
-const Content = ({ data, loading, contentType }) => {
+const ProductContent = ({ data, contentType }) => {
   const [showLaunchIcon, setShowLaunchIcon] = useState(false);
   const [isItemChecked, setIsItemChecked] = useState(false);
 
@@ -88,14 +71,58 @@ const Content = ({ data, loading, contentType }) => {
     setAnchorEl(null);
   };
 
-  const navigationHandler = () => {
-    const name = data.name.split(" ").join("_");
-    navigate(`/update/${contentType}/${name}`);
+  const detailsNavigationHandler = () => {
+    navigate(`/details/${contentType}/${data._id}`);
+    handleClose();
+  };
+
+  const updNavigationHandler = () => {
+    const productName = data.name.split(" ").join("_");
+    navigate(`/update/${contentType}/${productName}`);
 
     const updInfo =
-      contentType === "tv"
-        ? { ...data, images: null, sizes: null }
-        : { ...data, images: null, colors: null };
+      contentType === "cellphone"
+        ? {
+            _id: data._id,
+            name: data.name,
+            brand: data.brand,
+            year: data.year,
+            network: data.network,
+            dimensions: data.body?.dimensions,
+            weight: data.body?.weight,
+            sim: data.body?.sim,
+            displayType: data.display?.type,
+            displaySize: data.display?.size,
+            resolution: data.display?.resolution,
+            protection: data.display?.protection,
+            os: data.platform?.os,
+            chipset: data.platform?.chipset,
+            cpu: data.platform?.cpu,
+            gpu: data.platform?.gpu,
+            cardSlot: data.memory?.cardSlot,
+            internalMemory: data.memory?.internal,
+            ram: data.memory?.ram,
+            mainCameraFeatures: data.mainCamera?.features,
+            mainCameraVideo: data.mainCamera?.video,
+            selfieCameraFeatures: data.selfieCamera?.features,
+            selfieCameraVideo: data.selfieCamera?.video,
+            battery: data.battery,
+            price: data.price,
+            mainCamInfo: data.mainCamera?.picture,
+            selfieCamInfo: data.selfieCamera?.picture,
+            images: null,
+            colors: null,
+            sizes: null,
+          }
+        : { ...data, images: null, colors: null, sizes: null };
+
+    dispatch(setMainCamInfo(updInfo?.mainCamInfo));
+    localStorage.setItem("cameraInfo", JSON.stringify(updInfo?.mainCamInfo));
+    dispatch(setSelfieCamInfo(updInfo?.selfieCamInfo));
+    localStorage.setItem(
+      "selfieCameraInfo",
+      JSON.stringify(updInfo?.selfieCamInfo)
+    );
     dispatch(setProductInfo(updInfo));
     localStorage.setItem("updProductInfo", JSON.stringify(updInfo));
     handleClose();
@@ -118,42 +145,37 @@ const Content = ({ data, loading, contentType }) => {
     }
   }, [checkedData]);
 
-  // useEffect(() => {
-  //   if (isItemChecked) {
-  //     dispatch(addCheckItem(data._id));
-  //   } else {
-  //     dispatch(removeCheckItem(data._id));
-  //   }
-  // }, [isItemChecked, dispatch]);
-
   const checkboxClickHandler = () => {
     if (isItemChecked) {
       setIsItemChecked(false);
       dispatch(removeCheckItem(data._id));
     } else {
       setIsItemChecked(true);
-      dispatch(addCheckItem(data._id));
+      dispatch(addCheckItem({ contentType, itemId: data._id }));
     }
   };
 
   return (
     <TableRow
       hover
-      className="table-row"
+      className={isItemChecked ? "table-row" : undefined}
       role="checkbox"
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      sx={{
+        "&:last-child td, &:last-child th": { border: 0 },
+      }}
     >
       <TableCell padding="checkbox" onClick={checkboxClickHandler}>
         <Checkbox color="secondary" checked={isItemChecked} />
       </TableCell>
       <TableCell component="th" scope="row">
-        {data.name}
+        {data?.name}
       </TableCell>
       <TableCell
         align="center"
         sx={{
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Tooltip
@@ -166,33 +188,63 @@ const Content = ({ data, loading, contentType }) => {
             dispatch(
               setGalleryData({
                 contentType,
-                productId: data._id,
-                images: data.images,
+                productId: data?._id,
+                productName: data?.name,
+                images: data?.images,
               })
             );
             dispatch(toggleIsModalOpen(true));
           }}
         >
-          <Box className="image">
+          <Box
+            className={
+              contentType === "cellphone" ? "cellphone-image" : "image"
+            }
+          >
             {mainImage?.imageUrl ? (
-              <img src={mainImage.imageUrl} alt={data.name} id="table-image" />
+              <img
+                src={mainImage?.imageUrl}
+                alt={data?.name}
+                id="table-image"
+              />
             ) : (
-              <img src={placeholder} alt="placeholder image" id="table-image" />
+              <img
+                src={
+                  contentType === "cellphone" ? placeholderCell : placeholder
+                }
+                alt="placeholder image"
+                id="table-image"
+              />
             )}
             <CollectionsIcon id="icon" color="info" />
           </Box>
         </Tooltip>
       </TableCell>
-      <TableCell align="center">{data.brand}</TableCell>
-      {contentType === "computer" ? (
-        <TableCell align="center">All-In-One</TableCell>
-      ) : (
-        <TableCell align="center">{data.year}</TableCell>
+      <TableCell align="center">{data?.brand}</TableCell>
+      {contentType === "accessory" && (
+        <TableCell align="center">{data?.category}</TableCell>
       )}
-      {contentType === "tv" ? (
-        <TableCell align="center">{data.resolution}</TableCell>
-      ) : (
-        <TableCell align="center">256 GB / 8 GB</TableCell>
+      {contentType === "computer" && (
+        <TableCell align="center">{data?.type}</TableCell>
+      )}
+      {contentType === "cellphone" && (
+        <TableCell align="center">{data?.year}</TableCell>
+      )}
+      {contentType === "tv" && (
+        <TableCell align="center">{data?.year}</TableCell>
+      )}
+      {contentType === "tv" && (
+        <TableCell align="center">{data?.resolution}</TableCell>
+      )}
+      {contentType === "computer" && (
+        <TableCell align="center">
+          {data?.storage?.size} GB / {data?.ram}
+        </TableCell>
+      )}
+      {contentType === "cellphone" && (
+        <TableCell align="center">
+          {data?.memory?.internal} / {data?.memory?.ram}
+        </TableCell>
       )}
       <TableCell
         align="center"
@@ -203,7 +255,7 @@ const Content = ({ data, loading, contentType }) => {
         {contentType === "tv" ? (
           <Tooltip
             title={
-              data.sizes.length === 0
+              data?.sizes?.length === 0
                 ? "Click to add size"
                 : "Click to see more"
             }
@@ -229,19 +281,19 @@ const Content = ({ data, loading, contentType }) => {
                 dispatch(toggleSizesModal(true));
                 dispatch(
                   setSizesdata({
-                    productId: data._id,
-                    sizes: data.sizes,
+                    productId: data?._id,
+                    sizes: data?.sizes,
                   })
                 );
                 dispatch(toggleIsModalOpen(true));
               }}
             >
-              {data.sizes.length === 0 && (
+              {data?.sizes?.length === 0 && (
                 <Typography variant="h6" color="error">
                   No Sizes!
                 </Typography>
               )}
-              {data.sizes.slice(0, 4).map((size) => (
+              {data?.sizes?.slice(0, 4).map((size) => (
                 <Box
                   key={size._id}
                   display="flex"
@@ -268,14 +320,35 @@ const Content = ({ data, loading, contentType }) => {
         ) : (
           <Box
             display="flex"
-            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="center"
             sx={{
               width: "170px",
-              height: "100%",
+              height: "80px",
               margin: "auto",
+              position: "relative",
+              transition: "0.2s ease-in-out",
+              "&:hover": { color: colors.secondary[500] },
+            }}
+            onMouseEnter={() => setShowLaunchIcon(true)}
+            onMouseLeave={() => setShowLaunchIcon(false)}
+            onClick={() => {
+              dispatch(toggleColorsModal(true));
+              dispatch(
+                setColorsData({
+                  productId: data._id,
+                  colors: data.colors,
+                })
+              );
+              dispatch(toggleIsModalOpen(true));
             }}
           >
-            {dummyColors.map((color) => (
+            {data?.colors?.length === 0 && (
+              <Typography variant="h6" color="error">
+                No Colors!
+              </Typography>
+            )}
+            {data?.colors?.slice(0, 4).map((color) => (
               <Tooltip
                 key={color._id}
                 title={color.name}
@@ -295,11 +368,18 @@ const Content = ({ data, loading, contentType }) => {
                 ></Box>
               </Tooltip>
             ))}
+            {showLaunchIcon && (
+              <LaunchIcon
+                sx={{ position: "absolute", right: 0, bottom: "100%" }}
+              />
+            )}
           </Box>
         )}
       </TableCell>
-      <TableCell align="center">{data.totalQty}</TableCell>
-      {contentType !== "tv" && <TableCell align="center">$859.99</TableCell>}
+      <TableCell align="center">{data?.totalQty}</TableCell>
+      {contentType !== "tv" && (
+        <TableCell align="center">${data?.price}</TableCell>
+      )}
       <TableCell align="right">
         <IconButton
           id="basic-button"
@@ -333,7 +413,16 @@ const Content = ({ data, loading, contentType }) => {
             horizontal: "right",
           }}
         >
-          <MenuItem onClick={() => navigationHandler()}>
+          <MenuItem onClick={() => detailsNavigationHandler()}>
+            <InfoIcon
+              color="info"
+              sx={{
+                mr: "10px",
+              }}
+            />
+            Details
+          </MenuItem>
+          <MenuItem onClick={() => updNavigationHandler()}>
             <EditIcon
               color="warning"
               sx={{
@@ -357,4 +446,4 @@ const Content = ({ data, loading, contentType }) => {
   );
 };
 
-export default Content;
+export default ProductContent;

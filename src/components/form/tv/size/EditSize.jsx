@@ -33,6 +33,7 @@ const EditSize = ({ colors, productId }) => {
     (state) => state.editSizeModal
   );
   const { errorAlert, successAlert } = useSelector((state) => state.alert);
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
   const { isLoading, isSuccess, errorMsg, successMsg } = useSelector(
     (state) => state.editSize
   );
@@ -65,7 +66,7 @@ const EditSize = ({ colors, productId }) => {
         dispatch(toggleSuccessAlert(false));
         dispatch(toggleEditSizeModal(false));
         dispatch(resetEditProductSize());
-        dispatch(getProducts({ route: "tvs" }));
+        dispatch(getProducts({ route: "tvs", searchQ, page, perPage }));
       }, 3000);
     }
   }, [isSuccess, dispatch]);
@@ -88,7 +89,7 @@ const EditSize = ({ colors, productId }) => {
       width="100%"
       height="100%"
       sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-      onClick={() => dispatch(toggleEditSizeModal())}
+      onClick={() => dispatch(toggleEditSizeModal(false))}
     >
       {successAlert && (
         <CustomAlert

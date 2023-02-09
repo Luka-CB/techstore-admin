@@ -14,9 +14,21 @@ import { colorPallets } from "../../../theme";
 import ImageDrop from "../../ImageDrop";
 import AddIcon from "@mui/icons-material/Add";
 import AddProductLinks from "../AddProductLinks";
-import { toggleImageErrorState } from "../../../redux/features/stateSlice";
+import {
+  toggleImageColorNameErrorState,
+  toggleImageErrorState,
+} from "../../../redux/features/stateSlice";
 import Colors from "../Colors";
 import { accessoryFormSchema } from "../../../utils/validations";
+import { addProduct } from "../../../redux/actions/productActions";
+import CustomAlert from "../../CustomAlert";
+import {
+  toggleErrorAlert,
+  toggleSuccessAlert,
+} from "../../../redux/features/alertSlice";
+import { resetAddProduct } from "../../../redux/features/product/addSlice";
+import { resetImageData } from "../../../redux/features/imageSlice";
+import Dots from "../../Dots";
 
 const AddAccessory = () => {
   const theme = useTheme();
@@ -34,7 +46,13 @@ const AddAccessory = () => {
       : []
   );
 
-  const { isDropImageAdded } = useSelector((state) => state.image);
+  const { isDropImageAdded, dropImageData } = useSelector(
+    (state) => state.image
+  );
+  const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
+    (state) => state.addProduct
+  );
 
   const dispatch = useDispatch();
 
@@ -43,34 +61,57 @@ const AddAccessory = () => {
       dispatch(toggleImageErrorState(true));
       return;
     }
-    console.log(values);
+
+    if (!dropImageData?.colorName) {
+      dispatch(toggleImageColorNameErrorState(true));
+      return;
+    }
+
+    dispatch(
+      addProduct({
+        route: "accessories",
+        productData: {
+          ...values,
+          colors: accessoryColors,
+          imageData: {
+            image: dropImageData.image,
+            imageName: dropImageData.name,
+            imageColorName: dropImageData.colorName,
+          },
+        },
+      })
+    );
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        category: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).category
-          : "",
-        name: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).name
-          : "",
-        brand: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).brand
-          : "",
-        type: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).type
-          : "",
-        description: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).description
-          : "",
-        price: localStorage.getItem("formAccessoryInfo")
-          ? JSON.parse(localStorage.getItem("formAccessoryInfo")).price
-          : "",
-      },
-      validationSchema: accessoryFormSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleReset,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      name: localStorage.getItem("formAccessoryInfo")
+        ? JSON.parse(localStorage.getItem("formAccessoryInfo")).name
+        : "",
+      brand: localStorage.getItem("formAccessoryInfo")
+        ? JSON.parse(localStorage.getItem("formAccessoryInfo")).brand
+        : "",
+      category: localStorage.getItem("formAccessoryInfo")
+        ? JSON.parse(localStorage.getItem("formAccessoryInfo")).category
+        : "",
+      price: localStorage.getItem("formAccessoryInfo")
+        ? JSON.parse(localStorage.getItem("formAccessoryInfo")).price
+        : "",
+      description: localStorage.getItem("formAccessoryInfo")
+        ? JSON.parse(localStorage.getItem("formAccessoryInfo")).description
+        : "",
+    },
+    validationSchema: accessoryFormSchema,
+    onSubmit,
+  });
 
   useEffect(
     () => localStorage.setItem("formAccessoryInfo", JSON.stringify(values)),
@@ -87,18 +128,32 @@ const AddAccessory = () => {
       return;
     }
 
-    if (accessoryColors.some((color) => color.colorName === colorName)) {
+    if (accessoryColors.some((color) => color.name === colorName)) {
       setColorNameExistsErr(true);
       return;
     }
 
     setColorNameExistsErr(false);
 
-    setAccessoryColors((prev) => [...prev, { colorName, colorCode, qty }]);
+    const modifiedColorName =
+      colorName &&
+      colorName
+        .toLowerCase()
+        .split(" ")
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(" ");
+
+    setAccessoryColors((prev) => [
+      ...prev,
+      { name: modifiedColorName, code: colorCode, qty: +qty },
+    ]);
 
     localStorage.setItem(
       "formAccessoryColors",
-      JSON.stringify([...accessoryColors, { colorName, colorCode, qty }])
+      JSON.stringify([
+        ...accessoryColors,
+        { name: modifiedColorName, code: colorCode, qty: +qty },
+      ])
     );
 
     setColorName("");
@@ -106,11 +161,49 @@ const AddAccessory = () => {
     setQty(0);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(toggleSuccessAlert(true));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(resetAddProduct());
+        handleReset();
+        localStorage.removeItem("formAccessoryInfo");
+        localStorage.removeItem("formAccessoryColors");
+        dispatch(resetImageData());
+        setAccessoryColors([]);
+      }, 3000);
+    }
+  }, [isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (errorMsg) {
+      dispatch(toggleErrorAlert(true));
+      setTimeout(() => {
+        dispatch(toggleErrorAlert(false));
+        dispatch(resetAddProduct());
+      }, 3000);
+    }
+  }, [errorMsg, dispatch]);
+
   return (
     <Box sx={{ width: "70%", margin: "20px auto" }}>
+      {successAlert && (
+        <CustomAlert
+          severity="success"
+          transitionState={successAlert}
+          value={successMsg}
+        />
+      )}
+      {errorAlert && (
+        <CustomAlert
+          severity="error"
+          transitionState={errorAlert}
+          value={errorMsg}
+        />
+      )}
       <Paper
-        variant={theme.palette.mode === "dark" ? "outlined" : undefined}
-        elevation={12}
+        variant="outlined"
         sx={{ minHeight: "70vh", p: "15px 15px 30px 15px" }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
@@ -134,18 +227,6 @@ const AddAccessory = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Category *"
-                name="category"
-                value={values.category}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.category && Boolean(errors.category)}
-                helperText={touched.category && errors.category}
-                sx={{ width: "30%" }}
-              />
-              <TextField
-                color="secondary"
-                variant="outlined"
                 label="Product Name *"
                 name="name"
                 value={values.name}
@@ -153,7 +234,7 @@ const AddAccessory = () => {
                 onBlur={handleBlur}
                 error={touched.name && Boolean(errors.name)}
                 helperText={touched.name && errors.name}
-                sx={{ width: "30%" }}
+                sx={{ width: "45%" }}
               />
               <TextField
                 color="secondary"
@@ -165,7 +246,7 @@ const AddAccessory = () => {
                 onBlur={handleBlur}
                 error={touched.brand && Boolean(errors.brand)}
                 helperText={touched.brand && errors.brand}
-                sx={{ width: "30%" }}
+                sx={{ width: "45%" }}
               />
             </Box>
             <Box
@@ -177,13 +258,13 @@ const AddAccessory = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Type *"
-                name="type"
-                value={values.type}
+                label="Product Category *"
+                name="category"
+                value={values.category}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.type && Boolean(errors.type)}
-                helperText={touched.type && errors.type}
+                error={touched.category && Boolean(errors.category)}
+                helperText={touched.category && errors.category}
                 sx={{ width: "45%" }}
               />
               <TextField
@@ -298,12 +379,13 @@ const AddAccessory = () => {
               sx={{
                 mt: "50px",
                 alignSelf: "flex-end",
-                width: "150px",
-                p: "7px",
+                width: 150,
+                height: 40,
                 fontSize: "0.8rem",
               }}
+              disabled={isLoading}
             >
-              add product
+              {isLoading ? <Dots /> : "add product"}
             </Button>
           </form>
         </Box>

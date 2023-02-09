@@ -6,20 +6,22 @@ const Colors = ({ productColors, setColors, storageName }) => {
   const colors = colorPallets(theme.palette.mode);
 
   const removeColorHandler = (name) => {
-    const newColors = productColors.filter((c) => c.colorName !== name);
+    const newColors = productColors.filter((c) => c.name !== name);
     setColors(newColors);
     localStorage.setItem(storageName, JSON.stringify(newColors));
   };
 
   return (
     <Box
-      display="flex"
-      alignItems="center"
+      display="grid"
       sx={{
         p: "10px",
         mt: "20px",
         width: "100%",
         minHeight: "20px",
+        gridTemplateColumns: "repeat(8, 1fr)",
+        gap: 1,
+        alignItems: "center",
         backgroundColor:
           theme.palette.mode === "dark" ? colors.light[900] : colors.light[300],
         borderRadius: "15px",
@@ -33,10 +35,10 @@ const Colors = ({ productColors, setColors, storageName }) => {
           arrow
           TransitionComponent={Zoom}
           title="Double Click to Remove Color"
-          key={color.colorName}
+          key={color.name}
         >
           <Box
-            onDoubleClick={() => removeColorHandler(color.colorName)}
+            onDoubleClick={() => removeColorHandler(color.name)}
             sx={{
               backgroundColor: colors.light[100],
               ml: "10px",
@@ -55,7 +57,7 @@ const Colors = ({ productColors, setColors, storageName }) => {
             }}
           >
             <Typography variant="body2" textTransform="capitalize">
-              Name: {color.colorName}
+              Name: {color.name}
             </Typography>
             <Box variant="body2" sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="body2">Color:</Typography>
@@ -65,7 +67,7 @@ const Colors = ({ productColors, setColors, storageName }) => {
                   display: "inline-block",
                   width: "15px",
                   height: "15px",
-                  backgroundColor: color.colorCode,
+                  backgroundColor: color.code,
                   boxShadow: "0 0 1px black",
                 }}
               ></div>

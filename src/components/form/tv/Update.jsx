@@ -32,6 +32,7 @@ const UpdateTv = () => {
   const colors = colorPallets(theme.palette.mode);
 
   const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
   const { updProductInfo } = useSelector((state) => state.updProductInfo);
   const { isLoading, isSuccess, successMsg, errorMsg } = useSelector(
     (state) => state.updateProductInfo
@@ -77,7 +78,7 @@ const UpdateTv = () => {
       setTimeout(() => {
         dispatch(toggleSuccessAlert(false));
         dispatch(resetUpdateProductInfo());
-        dispatch(getProducts({ route: "tvs" }));
+        dispatch(getProducts({ route: "tvs", searchQ, page, perPage }));
       }, 3000);
     }
   }, [isSuccess, dispatch]);
@@ -109,7 +110,7 @@ const UpdateTv = () => {
         />
       )}
       <Paper
-        variant={theme.palette.mode === "dark" ? "outlined" : undefined}
+        variant="outlined"
         sx={{ minHeight: "70vh", p: "15px 15px 30px 15px" }}
       >
         <Box display="flex" flexDirection="column" alignItems="center">

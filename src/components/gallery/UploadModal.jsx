@@ -2,10 +2,10 @@ import { Box, Divider, Paper, Typography, Zoom } from "@mui/material";
 import {
   setImageData,
   toggleUploadImageModal,
-} from "../redux/features/modals/uploadModalSlice";
+} from "../../redux/features/modals/uploadModalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import AddImage from "./form/AddImage";
-import CustomAlert from "./CustomAlert";
+import AddImage from "./AddImage";
+import CustomAlert from "../CustomAlert";
 
 const UploadModal = ({ colors, contentType, productId }) => {
   const { isUploadImageModalOpen } = useSelector((state) => state.uploadModal);
@@ -57,7 +57,7 @@ const UploadModal = ({ colors, contentType, productId }) => {
             elevation={12}
             sx={{
               width: 300,
-              height: 400,
+              height: contentType === "cellphone" ? 700 : 400,
             }}
           >
             <Box

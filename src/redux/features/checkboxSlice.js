@@ -5,7 +5,6 @@ const initialState = {
     contentType: "",
     checkedItemIds: [],
   },
-  isBoxChecked: false,
 };
 
 const checkboxReducer = createSlice({
@@ -17,7 +16,8 @@ const checkboxReducer = createSlice({
       state.checkedData.checkedItemIds = payload.itemIds;
     },
     addCheckItem: (state, { payload }) => {
-      state.checkedData.checkedItemIds.push(payload);
+      state.checkedData.checkedItemIds.push(payload.itemId);
+      state.checkedData.contentType = payload.contentType;
     },
 
     removeAllCheckItems: (state) => {

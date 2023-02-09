@@ -15,6 +15,7 @@ import Dots from "../Dots";
 
 const DeleteSizeModal = ({ colors, route }) => {
   const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
   const { isDelSizeModalOpen, data } = useSelector(
     (state) => state.delSizeModal
   );
@@ -32,7 +33,7 @@ const DeleteSizeModal = ({ colors, route }) => {
         dispatch(toggleSuccessAlert(false));
         dispatch(toggleDelSizeModal(false));
         dispatch(resetDeleteProductSize());
-        dispatch(getProducts({ route }));
+        dispatch(getProducts({ route, searchQ, page, perPage }));
       }, 3000);
     }
   }, [isSuccess, dispatch]);

@@ -14,7 +14,10 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch, useSelector } from "react-redux";
 import Dots from "../../../Dots";
 import CustomAlert from "../../../CustomAlert";
-import { toggleErrorAlert } from "../../../../redux/features/alertSlice";
+import {
+  toggleErrorAlert,
+  toggleSuccessAlert,
+} from "../../../../redux/features/alertSlice";
 import { addProductSize } from "../../../../redux/actions/productSizeActions";
 import { resetAddProductSize } from "../../../../redux/features/product/size/addSizeSlice";
 import { getProducts } from "../../../../redux/actions/productActions";
@@ -31,11 +34,11 @@ const AddSize = ({ colors, id }) => {
   const { sizesData, isAddSizeModalOpen } = useSelector(
     (state) => state.sizesModal
   );
-  const { errorAlert } = useSelector((state) => state.alert);
-  const { isLoading, isSuccess, errorMsg } = useSelector(
+  const { successAlert, errorAlert } = useSelector((state) => state.alert);
+  const { page, perPage, searchQ } = useSelector((state) => state.filter);
+  const { isLoading, isSuccess, successMsg, errorMsg, addedSize } = useSelector(
     (state) => state.addSize
   );
-
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
@@ -50,20 +53,17 @@ const AddSize = ({ colors, id }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(toggleAddSizeModal(false));
-      setSize("");
-      setQty(0);
-      setPrice("");
-      dispatch(resetAddProductSize());
-      dispatch(getProducts({ route: "tvs" }));
-      dispatch(
-        addStoreSize({
-          size: +size,
-          qty: +qty,
-          price: +price,
-          _id: `temp-id${sizesData.sizes.length + 1}`,
-        })
-      );
+      dispatch(toggleSuccessAlert(true));
+      dispatch(addStoreSize({ ...addedSize }));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(toggleAddSizeModal(false));
+        dispatch(resetAddProductSize());
+        dispatch(getProducts({ route: "tvs", searchQ, page, perPage }));
+        setSize("");
+        setQty(0);
+        setPrice("");
+      }, 3000);
     }
   }, [isSuccess, dispatch]);
 
@@ -87,6 +87,13 @@ const AddSize = ({ colors, id }) => {
       sx={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       onClick={() => dispatch(toggleAddSizeModal(false))}
     >
+      {successAlert && (
+        <CustomAlert
+          severity="success"
+          value={successMsg}
+          transitionState={successAlert}
+        />
+      )}
       {errorAlert && (
         <CustomAlert
           severity="error"
