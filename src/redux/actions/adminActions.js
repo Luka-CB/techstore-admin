@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 export const loginAdmin = createAsyncThunk(
   "LOGIN_ADMIN",
   async (adminData, thunkAPI) => {
     try {
-      const { data } = await axios.post("/api/users/admin/login", adminData, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const { data } = await axios.post("/api/users/admin/login", adminData);
 
       localStorage.setItem("techstoreAdmin", JSON.stringify(data));
       return data;
@@ -23,14 +20,7 @@ export const logoutAdmin = createAsyncThunk(
   "LOGOUT_ADMIN",
   async (undefined, thunkAPI) => {
     try {
-      await axios.post(
-        "/api/users/admin/logout",
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      await axios.post("/api/users/admin/logout", {});
 
       localStorage.removeItem("techstoreAdmin");
     } catch (error) {

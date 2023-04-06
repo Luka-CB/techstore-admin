@@ -65,7 +65,7 @@ const ProductInfo = ({ colors, data, contentType }) => {
               Graphics: <span style={textColor}>{data.graphics}</span>
             </h3>
             <h3>
-              Display: <span style={textColor}>{data.display}</span>
+              Display: <span style={textColor}>{data.screen}</span>
             </h3>
             <h3>
               Camera: <span style={textColor}>{data.camera}</span>

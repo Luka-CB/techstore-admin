@@ -16,6 +16,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getProducts } from "../../redux/actions/productActions";
 import { setPage, setPerPage } from "../../redux/features/filterSlice";
 import { getCustomers } from "../../redux/actions/customerActions";
+import TooltipTitle from "../TooltipTitle";
 
 const perPageOptions = [5, 10, 15, 20, 25];
 
@@ -97,7 +98,7 @@ const CustomPagination = ({ colors, contentType }) => {
         justifyContent="space-around"
         sx={{ width: 250 }}
       >
-        <Tooltip title="First Page">
+        <Tooltip title={TooltipTitle("First Page")}>
           <span>
             <IconButton
               sx={{ "&:hover": { color: colors.secondary[500] } }}
@@ -114,7 +115,7 @@ const CustomPagination = ({ colors, contentType }) => {
             </IconButton>
           </span>
         </Tooltip>
-        <Tooltip title="Previous Page">
+        <Tooltip title={TooltipTitle("Previous Page")}>
           <span>
             <IconButton
               sx={{ "&:hover": { color: colors.secondary[500] } }}
@@ -140,7 +141,7 @@ const CustomPagination = ({ colors, contentType }) => {
             {paginationData?.totalDocs}
           </Typography>
         </Box>
-        <Tooltip title="Next Page">
+        <Tooltip title={TooltipTitle("Next Page")}>
           <span>
             <IconButton
               sx={{ "&:hover": { color: colors.secondary[500] } }}
@@ -157,7 +158,7 @@ const CustomPagination = ({ colors, contentType }) => {
             </IconButton>
           </span>
         </Tooltip>
-        <Tooltip title="Last Page">
+        <Tooltip title={TooltipTitle("Last Page")}>
           <span>
             <IconButton
               sx={{ "&:hover": { color: colors.secondary[500] } }}

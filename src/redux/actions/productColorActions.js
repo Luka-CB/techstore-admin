@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 export const addProductColor = createAsyncThunk(
   "ADD_PRODUCT_COLOR",
   async ({ route, color }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/admin/${route}/add-color`, color, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const { data } = await axios.put(`/api/admin/${route}/add-color`, color);
 
       return data;
     } catch (error) {
@@ -26,14 +23,7 @@ export const editProductColor = createAsyncThunk(
   "EDIT_PRODUCT_COLOR",
   async ({ route, color }, thunkAPI) => {
     try {
-      const { data } = await axios.put(
-        `/api/admin/${route}/edit-color`,
-        color,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.put(`/api/admin/${route}/edit-color`, color);
 
       return data;
     } catch (error) {
@@ -53,11 +43,7 @@ export const deleteProductColor = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/delete-color?productId=${ids.productId}&colorId=${ids.colorId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        {}
       );
 
       return data;

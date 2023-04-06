@@ -25,6 +25,7 @@ import {
   addStoreSize,
   toggleAddSizeModal,
 } from "../../../../redux/features/modals/sizesModalSlice";
+import TooltipTitle from "../../../TooltipTitle";
 
 const AddSize = ({ colors, id }) => {
   const [size, setSize] = useState("");
@@ -126,7 +127,7 @@ const AddSize = ({ colors, id }) => {
             >
               <Typography variant="h5">Add New Size</Typography>
               <Tooltip
-                title="Delete this size"
+                title={TooltipTitle("Delete this size")}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow

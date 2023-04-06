@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 export const addProductSize = createAsyncThunk(
   "ADD_PRODUCT_SIZE",
   async ({ route, size }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/admin/${route}/add-size`, size, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const { data } = await axios.put(`/api/admin/${route}/add-size`, size);
 
       return data;
     } catch (error) {
@@ -26,10 +23,7 @@ export const editProductSize = createAsyncThunk(
   "EDIT_PRODUCT_SIZE",
   async ({ route, size }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/admin/${route}/edit-size`, size, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const { data } = await axios.put(`/api/admin/${route}/edit-size`, size);
 
       return data;
     } catch (error) {
@@ -49,11 +43,7 @@ export const deleteProductSize = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/delete-size?productId=${ids.productId}&sizeId=${ids.sizeId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        {}
       );
 
       return data;

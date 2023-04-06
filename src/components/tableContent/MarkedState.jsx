@@ -29,6 +29,7 @@ import {
   deleteCustomers,
   getCustomers,
 } from "../../redux/actions/customerActions";
+import TooltipTitle from "../TooltipTitle";
 
 const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -167,7 +168,12 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
         {!isLoading && <DeleteIcon sx={{ mr: 1, fontSize: "1.5rem" }} />}
         {isLoading ? <Dots color={colors.danger[500]} /> : "Delete"}
       </Button>
-      <Tooltip title="Cancel" placement="top" TransitionComponent={Zoom} arrow>
+      <Tooltip
+        title={TooltipTitle("Cancel")}
+        placement="top"
+        TransitionComponent={Zoom}
+        arrow
+      >
         <IconButton
           color="warning"
           onClick={() => dispatch(removeAllCheckItems())}
@@ -192,7 +198,7 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
           </Typography>
           <Box display="flex" justifyContent="space-around">
             <Tooltip
-              title="YES"
+              title={TooltipTitle("YES")}
               placement="top"
               TransitionComponent={Zoom}
               arrow
@@ -202,7 +208,7 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
               </IconButton>
             </Tooltip>
             <Tooltip
-              title="NO"
+              title={TooltipTitle("NO")}
               placement="top"
               TransitionComponent={Zoom}
               arrow

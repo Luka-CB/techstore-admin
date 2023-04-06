@@ -38,6 +38,7 @@ import {
   setDelCustomerModalData,
   toggleDelCustomerModal,
 } from "../../../redux/features/modals/delCustomerModalSlice";
+import TooltipTitle from "../../TooltipTitle";
 
 const CustomerContent = ({ data, contentType }) => {
   const [isItemChecked, setIsItemChecked] = useState(false);
@@ -158,7 +159,11 @@ const CustomerContent = ({ data, contentType }) => {
         </TableCell>
         <TableCell align="center">{data?.createdAt}</TableCell>
         <Tooltip
-          title={data?.username !== "admin" ? "Change Status" : undefined}
+          title={
+            data?.username !== "admin"
+              ? TooltipTitle("Change Status")
+              : undefined
+          }
           placement="top"
           TransitionComponent={Zoom}
           arrow
@@ -198,7 +203,7 @@ const CustomerContent = ({ data, contentType }) => {
             ) : (
               <>
                 <Tooltip
-                  title="Remove Admin Status"
+                  title={TooltipTitle("Remove Admin Status")}
                   placement="top"
                   TransitionComponent={Zoom}
                   arrow
@@ -227,7 +232,7 @@ const CustomerContent = ({ data, contentType }) => {
                   </Box>
                 </Tooltip>
                 <Tooltip
-                  title="Make Admin"
+                  title={TooltipTitle("Make Admin")}
                   placement="top"
                   TransitionComponent={Zoom}
                   arrow
@@ -293,15 +298,6 @@ const CustomerContent = ({ data, contentType }) => {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={() => updNavigationHandler()}>
-              <EditIcon
-                color="warning"
-                sx={{
-                  mr: "10px",
-                }}
-              />
-              Update
-            </MenuItem>
             <MenuItem onClick={deletehandler}>
               <DeleteIcon
                 color="error"

@@ -45,7 +45,11 @@ const Search = ({ contentType }) => {
       />
       <TextField
         id="input-with-sx"
-        label={`Search ${contentType}s`}
+        label={
+          contentType === "order"
+            ? "Search by username or order id"
+            : `Search ${contentType}s`
+        }
         variant="standard"
         color="secondary"
         fullWidth

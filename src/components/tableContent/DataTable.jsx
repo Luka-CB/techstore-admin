@@ -32,6 +32,12 @@ import ProductTableHead from "./product/ProductTableHead";
 import CustomerTableHead from "./customer/CustomerTabelHead";
 import CustomerContent from "./customer/CustomerContent";
 import DeleteCustomerModal from "./customer/DeleteCustomerModal";
+import OrderTableHead from "./order/OrderTableHead";
+import OrderContent from "./order/OrderContent";
+import TooltipTitle from "../TooltipTitle";
+import ShowMore from "../ShowMore";
+
+const omitCreateBtn = ["customer", "order", "review"];
 
 const DataTable = ({
   content,
@@ -91,10 +97,19 @@ const DataTable = ({
                 <Box display="flex" alignItems="center">
                   {contentType === "customer" ? (
                     <Typography variant="h6" mr="20px">
-                      {content?.length > 1
-                        ? "Total Customers"
-                        : "Total Customer"}
-                      :{" "}
+                      {content?.length > 1 ? "Total Customers" : "Customer"}:{" "}
+                      <span
+                        style={{
+                          color: colors.secondary[500],
+                          fontSize: "1rem",
+                        }}
+                      >
+                        {content?.length}
+                      </span>
+                    </Typography>
+                  ) : contentType === "order" ? (
+                    <Typography variant="h6" mr="20px">
+                      {content?.length > 1 ? "Total Orders" : "Order"}:{" "}
                       <span
                         style={{
                           color: colors.secondary[500],
@@ -106,10 +121,7 @@ const DataTable = ({
                     </Typography>
                   ) : (
                     <Typography variant="h6" mr="20px">
-                      {totalProductCount > 1
-                        ? "Total Products"
-                        : "Total Product"}
-                      :{" "}
+                      {totalProductCount > 1 ? "Total Products" : "Product"}:{" "}
                       <span
                         style={{
                           color: colors.secondary[500],
@@ -121,7 +133,7 @@ const DataTable = ({
                     </Typography>
                   )}
                   <Tooltip
-                    title="Filter list"
+                    title={TooltipTitle("Filter list")}
                     sx={{
                       mr: "10px",
                       transition: "0.2s ease-in-out",
@@ -135,10 +147,10 @@ const DataTable = ({
                       <FilterListIcon sx={{ fontSize: "1.3rem" }} />
                     </IconButton>
                   </Tooltip>
-                  {contentType !== "customer" && (
+                  {!omitCreateBtn.includes(contentType) && (
                     <Link to={`/create/${contentType}`}>
                       <Tooltip
-                        title={`Add new ${contentType}`}
+                        title={TooltipTitle(`Add new ${contentType}`)}
                         sx={{
                           transition: "0.2s ease-in-out",
                           "&:hover": { color: colors.secondary[500] },
@@ -174,6 +186,8 @@ const DataTable = ({
           >
             {contentType === "customer" ? (
               <CustomerTableHead content={content} contentType={contentType} />
+            ) : contentType === "order" ? (
+              <OrderTableHead content={content} contentType={contentType} />
             ) : (
               <ProductTableHead content={content} contentType={contentType} />
             )}
@@ -220,6 +234,14 @@ const DataTable = ({
                               contentType={contentType}
                             />
                           ))
+                        : contentType === "order"
+                        ? content?.map((data) => (
+                            <OrderContent
+                              key={data._id}
+                              data={data}
+                              contentType={contentType}
+                            />
+                          ))
                         : content?.map((data) => (
                             <ProductContent
                               key={data._id}
@@ -237,6 +259,9 @@ const DataTable = ({
         {!searchQ && totalProductCount > 4 && (
           <CustomPagination colors={colors} contentType={contentType} />
         )}
+        {contentType === "order" && content?.length > 20 ? (
+          <ShowMore colors={colors} contentCount={content?.length} />
+        ) : null}
       </Paper>
       <FormControlLabel
         control={

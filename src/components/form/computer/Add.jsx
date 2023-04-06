@@ -111,8 +111,8 @@ const AddComputer = () => {
       graphics: localStorage.getItem("formCompInfo")
         ? JSON.parse(localStorage.getItem("formCompInfo")).graphics
         : "",
-      display: localStorage.getItem("formCompInfo")
-        ? JSON.parse(localStorage.getItem("formCompInfo")).display
+      screen: localStorage.getItem("formCompInfo")
+        ? JSON.parse(localStorage.getItem("formCompInfo")).screen
         : "",
       ram: localStorage.getItem("formCompInfo")
         ? JSON.parse(localStorage.getItem("formCompInfo")).ram
@@ -341,12 +341,12 @@ const AddComputer = () => {
                 color="secondary"
                 variant="outlined"
                 label="Product Display *"
-                name="display"
-                value={values.display}
+                name="screen"
+                value={values.screen}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.display && Boolean(errors.display)}
-                helperText={touched.display && errors.display}
+                error={touched.screen && Boolean(errors.screen)}
+                helperText={touched.screen && errors.screen}
                 sx={{ width: "30%" }}
               />
               <TextField

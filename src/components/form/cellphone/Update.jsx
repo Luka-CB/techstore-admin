@@ -32,6 +32,7 @@ import Dots from "../../Dots";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { resetUpdateProductInfo } from "../../../redux/features/product/updateInfoSlice";
 import { useNavigate } from "react-router-dom";
+import TooltipTitle from "../../TooltipTitle";
 
 const UpdateCellphone = () => {
   const theme = useTheme();
@@ -169,7 +170,7 @@ const UpdateCellphone = () => {
         <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
           <Tooltip
             onClick={() => navigate(-1)}
-            title="Go Back"
+            title={TooltipTitle("Go Back")}
             placement="top"
             TransitionComponent={Zoom}
             arrow

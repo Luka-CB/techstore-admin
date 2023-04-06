@@ -27,6 +27,7 @@ import {
   updateProductInfo,
 } from "../../../redux/actions/productActions";
 import { resetUpdateProductInfo } from "../../../redux/features/product/updateInfoSlice";
+import TooltipTitle from "../../TooltipTitle";
 
 const UpdateComputer = () => {
   const theme = useTheme();
@@ -60,7 +61,7 @@ const UpdateComputer = () => {
         processor: updProductInfo ? updProductInfo.processor : "",
         os: updProductInfo ? updProductInfo.os : "",
         graphics: updProductInfo ? updProductInfo.graphics : "",
-        display: updProductInfo ? updProductInfo.display : "",
+        screen: updProductInfo ? updProductInfo.screen : "",
         ram: updProductInfo ? updProductInfo.memory : "",
         storagetype: updProductInfo ? updProductInfo.storage?.type : "",
         interface: updProductInfo ? updProductInfo.storage?.interface : "",
@@ -126,7 +127,7 @@ const UpdateComputer = () => {
         <Box display="flex" flexDirection="column" alignItems="center">
           <Tooltip
             onClick={() => navigate(-1)}
-            title="Go Back"
+            title={TooltipTitle("Go Back")}
             placement="top"
             TransitionComponent={Zoom}
             arrow
@@ -246,12 +247,12 @@ const UpdateComputer = () => {
                 color="secondary"
                 variant="outlined"
                 label="Product Display *"
-                name="display"
-                value={values.display}
+                name="screen"
+                value={values.screen}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.display && Boolean(errors.display)}
-                helperText={touched.display && errors.display}
+                error={touched.screen && Boolean(errors.screen)}
+                helperText={touched.screen && errors.screen}
                 sx={{ width: "30%" }}
               />
               <TextField

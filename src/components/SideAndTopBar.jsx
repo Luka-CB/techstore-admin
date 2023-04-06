@@ -29,11 +29,14 @@ import TvOutlinedIcon from "@mui/icons-material/TvOutlined";
 import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import HeadphonesBatteryOutlinedIcon from "@mui/icons-material/HeadphonesBatteryOutlined";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAdmin } from "../redux/actions/adminActions";
 import { removeAllCheckItems } from "../redux/features/checkboxSlice";
 import { resetFilter } from "../redux/features/filterSlice";
+import TooltipTitle from "./TooltipTitle";
 
 const drawerWidth = 250;
 
@@ -192,11 +195,11 @@ const SideAndTopBar = () => {
                 <AccountCircleOutlinedIcon sx={{ fontSize: "1.3rem" }} />
               </IconButton>
               <Tooltip
-                title={
+                title={TooltipTitle(
                   theme.palette.mode === "dark"
                     ? "Turn on light mode"
                     : "Turn on dark mode"
-                }
+                )}
                 TransitionComponent={Zoom}
                 arrow
               >
@@ -238,7 +241,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "Dashboard" : undefined}
+                  title={!open ? TooltipTitle("Dashboard") : undefined}
                   placement="right"
                   arrow
                 >
@@ -273,7 +276,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "Customers" : undefined}
+                  title={!open ? TooltipTitle("Customers") : undefined}
                   placement="right"
                   arrow
                 >
@@ -309,7 +312,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "TVs" : undefined}
+                  title={!open ? TooltipTitle("TVs") : undefined}
                   placement="right"
                   arrow
                 >
@@ -344,7 +347,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "Computers" : undefined}
+                  title={!open ? TooltipTitle("Computers") : undefined}
                   placement="right"
                   arrow
                 >
@@ -379,7 +382,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "Cell Phones" : undefined}
+                  title={!open ? TooltipTitle("Cell Phones") : undefined}
                   placement="right"
                   arrow
                 >
@@ -414,7 +417,7 @@ const SideAndTopBar = () => {
                 }}
               >
                 <Tooltip
-                  title={!open ? "Accessories" : undefined}
+                  title={!open ? TooltipTitle("Accessories") : undefined}
                   placement="right"
                   arrow
                 >
@@ -432,6 +435,76 @@ const SideAndTopBar = () => {
                 </Tooltip>
                 <ListItemText
                   primary="Accessories"
+                  sx={{ opacity: open ? 1 : 0, color: colors.light[100] }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </NavLink>
+          <NavLink to={"/orders"} style={{ textDecoration: "none" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <Tooltip
+                  title={!open ? TooltipTitle("Orders") : undefined}
+                  placement="right"
+                  arrow
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ShoppingBasketIcon sx={{ fontSize: "1.4rem" }} />
+                  </ListItemIcon>
+                </Tooltip>
+                <ListItemText
+                  primary="Orders"
+                  sx={{ opacity: open ? 1 : 0, color: colors.light[100] }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </NavLink>
+          <NavLink to={"/reviews"} style={{ textDecoration: "none" }}>
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleClickOnItem}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <Tooltip
+                  title={!open ? TooltipTitle("Reviews") : undefined}
+                  placement="right"
+                  arrow
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ReviewsIcon sx={{ fontSize: "1.4rem" }} />
+                  </ListItemIcon>
+                </Tooltip>
+                <ListItemText
+                  primary="Reviews"
                   sx={{ opacity: open ? 1 : 0, color: colors.light[100] }}
                 />
               </ListItemButton>

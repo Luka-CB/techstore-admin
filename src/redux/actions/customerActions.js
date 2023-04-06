@@ -1,16 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 export const getCustomers = createAsyncThunk(
   "GET_CUSTOMERS",
   async ({ searchQ = "", page = "1", perPage = "" }, thunkAPI) => {
     try {
       const { data } = await axios.get(
-        `/api/admin/customers/get-all?searchQ=${searchQ}&page=${page}&perPage=${perPage}`,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        `/api/admin/customers/get-all?searchQ=${searchQ}&page=${page}&perPage=${perPage}`
       );
 
       return data;
@@ -31,11 +27,7 @@ export const changeAdminStatus = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/customers/change-status/${userId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        {}
       );
 
       return data;
@@ -54,14 +46,9 @@ export const deleteCustomers = createAsyncThunk(
   "DELETE_CUSTOMERS",
   async ({ userIds }, thunkAPI) => {
     try {
-      const { data } = await axios.delete(
-        `/api/admin/customers/delete-many`,
-        { data: { userIds } },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.delete(`/api/admin/customers/delete-many`, {
+        data: { userIds },
+      });
 
       return data;
     } catch (error) {
@@ -80,11 +67,7 @@ export const deleteCustomer = createAsyncThunk(
   async (userId, thunkAPI) => {
     try {
       const { data } = await axios.delete(
-        `/api/admin/customers/delete-one/${userId}`,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        `/api/admin/customers/delete-one/${userId}`
       );
 
       return data;

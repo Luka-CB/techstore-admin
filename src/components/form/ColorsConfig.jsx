@@ -31,6 +31,7 @@ import {
 import AddColor from "./AddColor";
 import EditColor from "./EditColor";
 import DeleteColorModal from "./DeleteColorModal";
+import TooltipTitle from "../TooltipTitle";
 
 const ColorsConfig = ({ contentType }) => {
   const theme = useTheme();
@@ -91,7 +92,7 @@ const ColorsConfig = ({ contentType }) => {
             >
               <Typography variant="h5">Add, Update or Remove Color</Typography>
               <Tooltip
-                title="Add New Color"
+                title={TooltipTitle("Add New Color")}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow

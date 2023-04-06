@@ -23,6 +23,7 @@ import { resetEditProductSize } from "../../../../redux/features/product/size/ed
 import { getProducts } from "../../../../redux/actions/productActions";
 import { updateStoreSize } from "../../../../redux/features/modals/sizesModalSlice";
 import { toggleEditSizeModal } from "../../../../redux/features/modals/editSizeModalSlice";
+import TooltipTitle from "../../../TooltipTitle";
 
 const EditSize = ({ colors, productId }) => {
   const [size, setSize] = useState("");
@@ -130,7 +131,7 @@ const EditSize = ({ colors, productId }) => {
             >
               <Typography variant="h5">Edit Size</Typography>
               <Tooltip
-                title="Delete this size"
+                title={TooltipTitle("Delete this size")}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow

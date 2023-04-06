@@ -1,5 +1,6 @@
 import { Box, Tooltip, Typography, useTheme, Zoom } from "@mui/material";
 import { colorPallets } from "../../theme";
+import TooltipTitle from "../TooltipTitle";
 
 const Sizes = ({ sizes, setSizes }) => {
   const theme = useTheme();
@@ -30,9 +31,9 @@ const Sizes = ({ sizes, setSizes }) => {
       </Typography>
       {sizes.map((size) => (
         <Tooltip
+          title={TooltipTitle("Double Click to Remove Size")}
           arrow
           TransitionComponent={Zoom}
-          title="Double Click to Remove Size"
           key={size.size}
         >
           <Box

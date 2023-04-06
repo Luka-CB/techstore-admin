@@ -26,6 +26,7 @@ import {
   updateProductInfo,
 } from "../../../redux/actions/productActions";
 import { resetUpdateProductInfo } from "../../../redux/features/product/updateInfoSlice";
+import TooltipTitle from "../../TooltipTitle";
 
 const UpdateTv = () => {
   const theme = useTheme();
@@ -116,7 +117,7 @@ const UpdateTv = () => {
         <Box display="flex" flexDirection="column" alignItems="center">
           <Tooltip
             onClick={() => navigate(-1)}
-            title="Go Back"
+            title={TooltipTitle("Go Back")}
             placement="top"
             TransitionComponent={Zoom}
             arrow

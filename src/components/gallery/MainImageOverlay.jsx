@@ -192,7 +192,7 @@ const MainImageOverlay = ({ route, colors }) => {
           )}
         </Zoom>
       </Box>
-      {route !== "tvs" && (
+      {route !== "tvs" && galleryData.images.length > 1 && (
         <ImageColor route={route} productId={galleryData.productId} />
       )}
     </Box>

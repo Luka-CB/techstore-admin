@@ -84,19 +84,29 @@ const AddImage = ({ colors, productId, route }) => {
           sx={{
             width: 300,
             height: route === "cellphones" ? "auto" : 170,
+            maxHeight: route === "cellphones" ? 450 : 170,
           }}
         >
           {imageData.image ? (
             <img
               src={imageData.image}
               alt={imageData.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                maxHeight: route === "cellphones" ? 400 : 170,
+                objectFit: "cover",
+              }}
             />
           ) : (
             <img
               src={route === "cellphones" ? placeholderCell : placeholder}
               alt="placeholder image"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
             />
           )}
         </Box>

@@ -39,6 +39,7 @@ import deleteCustomerSlice from "./features/customers/deleteCustomerSlice";
 import delProductModalSlice from "./features/modals/delProductModalSlice";
 import delCustomerModalSlice from "./features/modals/delCustomerModalSlice";
 import deleteCustomersSlice from "./features/customers/deleteCustomersSlice";
+import getOrdersSlice from "./features/orders/getOrdersSlice";
 
 const store = configureStore({
   reducer: {
@@ -82,6 +83,7 @@ const store = configureStore({
     updProductInfo: updProductInfoSlice,
     checkbox: checkboxSlice,
     filter: filterSlice,
+    getOrders: getOrdersSlice,
   },
 });
 

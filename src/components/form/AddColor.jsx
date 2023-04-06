@@ -25,6 +25,7 @@ import {
   toggleAddColorModal,
 } from "../../redux/features/modals/colorsModalSlice";
 import { resetAddProductColor } from "../../redux/features/product/color/addColorSlice";
+import TooltipTitle from "../TooltipTitle";
 
 const AddColor = ({ colors, id, contentType }) => {
   const [name, setName] = useState("");
@@ -137,7 +138,7 @@ const AddColor = ({ colors, id, contentType }) => {
             >
               <Typography variant="h5">Add New Color</Typography>
               <Tooltip
-                title="Delete this color"
+                title={TooltipTitle("Delete this color")}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow

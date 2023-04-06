@@ -17,6 +17,7 @@ import { getProduct } from "../redux/actions/productActions";
 import { colorPallets } from "../theme";
 import ProductInfo from "../components/productDetails/ProductInfo";
 import ProductColors from "../components/productDetails/ProductColors";
+import TooltipTitle from "../components/TooltipTitle";
 
 const Details = () => {
   const theme = useTheme();
@@ -49,7 +50,7 @@ const Details = () => {
       >
         <Tooltip
           onClick={() => navigate(-1)}
-          title="Go Back"
+          title={TooltipTitle("Go Back")}
           placement="top"
           TransitionComponent={Zoom}
           arrow

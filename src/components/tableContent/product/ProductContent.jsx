@@ -49,6 +49,7 @@ import {
   setMainCamInfo,
   setSelfieCamInfo,
 } from "../../../redux/features/cameraInfoSlice";
+import TooltipTitle from "../../TooltipTitle";
 
 const ProductContent = ({ data, contentType }) => {
   const [showLaunchIcon, setShowLaunchIcon] = useState(false);
@@ -179,7 +180,7 @@ const ProductContent = ({ data, contentType }) => {
         }}
       >
         <Tooltip
-          title="See full gallery"
+          title={TooltipTitle("See full gallery")}
           placement="top"
           TransitionComponent={Zoom}
           arrow
@@ -254,11 +255,11 @@ const ProductContent = ({ data, contentType }) => {
       >
         {contentType === "tv" ? (
           <Tooltip
-            title={
+            title={TooltipTitle(
               data?.sizes?.length === 0
                 ? "Click to add size"
                 : "Click to see more"
-            }
+            )}
             placement="top"
             TransitionComponent={Zoom}
             arrow
@@ -351,7 +352,7 @@ const ProductContent = ({ data, contentType }) => {
             {data?.colors?.slice(0, 4).map((color) => (
               <Tooltip
                 key={color._id}
-                title={color.name}
+                title={TooltipTitle(color.name)}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow

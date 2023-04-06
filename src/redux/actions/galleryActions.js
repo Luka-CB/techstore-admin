@@ -1,18 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 export const addImage = createAsyncThunk(
   "ADD_IMAGE",
   async (info, thunkAPI) => {
     try {
-      const { data } = await axios.put(
-        `/api/admin/${info.route}/add-image`,
-        { productId: info.productId, imageData: info.imageData },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.put(`/api/admin/${info.route}/add-image`, {
+        productId: info.productId,
+        imageData: info.imageData,
+      });
 
       return data;
     } catch (error) {
@@ -32,11 +28,7 @@ export const changeImageStatus = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${info.route}/change-image-status?productId=${info.ids.productId}&imageId=${info.ids.imageId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        {}
       );
 
       return data;
@@ -57,11 +49,7 @@ export const deleteImage = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/delete-image?productId=${ids.productId}&imageId=${ids.imageId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        {}
       );
 
       return data;
@@ -81,11 +69,7 @@ export const getImageColorCode = createAsyncThunk(
   async ({ route, query }, thunkAPI) => {
     try {
       const { data } = await axios.get(
-        `/api/admin/${route}/image-color-code?productId=${query.productId}&colorName=${query.colorName}`,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        `/api/admin/${route}/image-color-code?productId=${query.productId}&colorName=${query.colorName}`
       );
 
       return data;
@@ -106,11 +90,7 @@ export const editImageColorName = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/image-color-name`,
-        updData,
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
+        updData
       );
 
       return data;

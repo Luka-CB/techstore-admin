@@ -8,6 +8,7 @@
 
   .main-image,
   .cellphone-image-wrapper {
+    margin: 0 10px;
     width: 40%;
     height: 600px;
     display: flex;
@@ -84,6 +85,7 @@
     margin-left: 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-content: start;
     gap: 20px 0;
     padding: 20px 0;
     height: 640px;

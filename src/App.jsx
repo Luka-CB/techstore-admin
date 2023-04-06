@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import SignIn from "./components/SignIn";
 import Update from "./pages/Update";
 import Details from "./pages/Details";
+import Orders from "./pages/Orders";
+import Reviews from "./pages/Reviews";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -51,6 +53,8 @@ const App = () => {
                   <Route path="/computers" element={<Computers />} />
                   <Route path="/cellphones" element={<CellPhones />} />
                   <Route path="/accessories" element={<Accessories />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/reviews" element={<Reviews />} />
                   <Route path="/create/:product" element={<Create />} />
                   <Route path="/update/:product/:name" element={<Update />} />
                   <Route

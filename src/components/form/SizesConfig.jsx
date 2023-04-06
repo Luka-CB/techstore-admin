@@ -32,6 +32,7 @@ import {
   setEditSizedata,
   toggleEditSizeModal,
 } from "../../redux/features/modals/editSizeModalSlice";
+import TooltipTitle from "../TooltipTitle";
 
 const SizesConfig = () => {
   const theme = useTheme();
@@ -71,7 +72,7 @@ const SizesConfig = () => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: "70%",
-          minWidth: 250,
+          minWidth: 950,
           minHeight: 350,
         }}
       >
@@ -80,7 +81,7 @@ const SizesConfig = () => {
             elevation={12}
             onClick={(e) => e.stopPropagation()}
             sx={{
-              minWidth: 250,
+              minWidth: 950,
               minHeight: 350,
             }}
           >
@@ -92,7 +93,7 @@ const SizesConfig = () => {
             >
               <Typography variant="h5">Add, Update or Remove Size</Typography>
               <Tooltip
-                title="Add New Size"
+                title={TooltipTitle("Add New Size")}
                 placement="top"
                 TransitionComponent={Zoom}
                 arrow
@@ -168,7 +169,7 @@ const SizesConfig = () => {
                         sx={{ mt: 1, mr: 1, width: "100%" }}
                       >
                         <Tooltip
-                          title="Edit this size"
+                          title={TooltipTitle("Edit this size")}
                           placement="top"
                           TransitionComponent={Zoom}
                           arrow
@@ -186,7 +187,7 @@ const SizesConfig = () => {
                           </IconButton>
                         </Tooltip>
                         <Tooltip
-                          title="Delete this size"
+                          title={TooltipTitle("Delete this size")}
                           placement="top"
                           TransitionComponent={Zoom}
                           arrow
