@@ -97,7 +97,7 @@ const AddCellphone = () => {
           imageData: {
             image: dropImageData.image,
             imageName: dropImageData.name,
-            imageColorName: dropImageData.colorName,
+            imageColorName: dropImageData.colorName.toLowerCase(),
           },
         },
       })
@@ -213,24 +213,16 @@ const AddCellphone = () => {
 
     setColorNameExistsErr(false);
 
-    const modifiedColorName =
-      colorName &&
-      colorName
-        .toLowerCase()
-        .split(" ")
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(" ");
-
     setCellColors((prev) => [
       ...prev,
-      { name: modifiedColorName, code: colorCode, qty: +qty },
+      { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
     ]);
 
     localStorage.setItem(
       "formCellColors",
       JSON.stringify([
         ...cellColors,
-        { name: modifiedColorName, code: colorCode, qty: +qty },
+        { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
       ])
     );
 

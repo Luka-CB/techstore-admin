@@ -76,7 +76,13 @@ export const deleteImage = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/delete-image?productId=${ids.productId}&imageId=${ids.imageId}`,
-        {}
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${admin.token}`,
+          },
+        }
       );
 
       return data;
@@ -100,7 +106,13 @@ export const getImageColorCode = createAsyncThunk(
 
     try {
       const { data } = await axios.get(
-        `/api/admin/${route}/image-color-code?productId=${query.productId}&colorName=${query.colorName}`
+        `/api/admin/${route}/image-color-code?productId=${query.productId}&colorName=${query.colorName}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${admin.token}`,
+          },
+        }
       );
 
       return data;
@@ -125,7 +137,13 @@ export const editImageColorName = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/image-color-name`,
-        updData
+        updData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${admin.token}`,
+          },
+        }
       );
 
       return data;

@@ -194,7 +194,7 @@ const AddTv = () => {
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <AddProductLinks excludeLink="tv" />
-          <ImageDrop />
+          <ImageDrop contentType="tv" />
           <form
             onSubmit={handleSubmit}
             style={{

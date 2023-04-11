@@ -76,7 +76,7 @@ const AddAccessory = () => {
           imageData: {
             image: dropImageData.image,
             imageName: dropImageData.name,
-            imageColorName: dropImageData.colorName,
+            imageColorName: dropImageData.colorName.toLowerCase(),
           },
         },
       })
@@ -135,24 +135,16 @@ const AddAccessory = () => {
 
     setColorNameExistsErr(false);
 
-    const modifiedColorName =
-      colorName &&
-      colorName
-        .toLowerCase()
-        .split(" ")
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(" ");
-
     setAccessoryColors((prev) => [
       ...prev,
-      { name: modifiedColorName, code: colorCode, qty: +qty },
+      { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
     ]);
 
     localStorage.setItem(
       "formAccessoryColors",
       JSON.stringify([
         ...accessoryColors,
-        { name: modifiedColorName, code: colorCode, qty: +qty },
+        { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
       ])
     );
 
@@ -208,7 +200,7 @@ const AddAccessory = () => {
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <AddProductLinks excludeLink="accessory" />
-          <ImageDrop />
+          <ImageDrop contentType="accessory" />
           <form
             onSubmit={handleSubmit}
             style={{

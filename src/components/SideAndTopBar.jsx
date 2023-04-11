@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import { ColorModeContext, colorPallets } from "../theme";
 import {
@@ -128,6 +128,11 @@ const SideAndTopBar = () => {
     dispatch(resetFilter());
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
@@ -180,7 +185,7 @@ const SideAndTopBar = () => {
             <Box display="flex" alignItems="center">
               <IconButton
                 sx={{ display: "flex", alignItems: "flex-end" }}
-                onClick={() => dispatch(logout())}
+                onClick={handleLogout}
               >
                 <Typography mr={0.3}>Sign Out</Typography>
                 <AccountCircleOutlinedIcon sx={{ fontSize: "1.3rem" }} />

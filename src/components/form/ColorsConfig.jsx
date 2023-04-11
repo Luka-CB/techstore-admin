@@ -154,7 +154,12 @@ const ColorsConfig = ({ contentType }) => {
                     <Box display="flex" flex={1} flexDirection="column">
                       <Typography variant="h6" sx={{ mt: 1 }}>
                         Name:{" "}
-                        <span style={{ color: colors.secondary[500] }}>
+                        <span
+                          style={{
+                            color: colors.secondary[500],
+                            textTransform: "capitalize",
+                          }}
+                        >
                           {color.name}
                         </span>
                       </Typography>

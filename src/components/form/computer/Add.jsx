@@ -76,7 +76,7 @@ const AddComputer = () => {
           imageData: {
             image: dropImageData.image,
             imageName: dropImageData.name,
-            imageColorName: dropImageData.colorName,
+            imageColorName: dropImageData.colorName.toLowerCase(),
           },
         },
       })
@@ -162,24 +162,16 @@ const AddComputer = () => {
 
     setColorNameExistsErr(false);
 
-    const modifiedColorName =
-      colorName &&
-      colorName
-        .toLowerCase()
-        .split(" ")
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(" ");
-
     setComputerColors((prev) => [
       ...prev,
-      { name: modifiedColorName, code: colorCode, qty: +qty },
+      { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
     ]);
 
     localStorage.setItem(
       "formComputerColors",
       JSON.stringify([
         ...computerColors,
-        { name: modifiedColorName, code: colorCode, qty: +qty },
+        { name: colorName.toLowerCase(), code: colorCode, qty: +qty },
       ])
     );
 
@@ -235,7 +227,7 @@ const AddComputer = () => {
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <AddProductLinks excludeLink="computer" />
-          <ImageDrop />
+          <ImageDrop contentType="computer" />
           <form
             onSubmit={handleSubmit}
             style={{

@@ -101,17 +101,19 @@ const ImageDrop = ({ contentType }) => {
               alt=""
               id={isDragActive ? "dropzone-image-active" : "dropzone-image"}
             />
-            <div className="color-name" onClick={(e) => e.stopPropagation()}>
-              <input
-                type="text"
-                id={imgColorNameError ? "name-input-error" : "name-input"}
-                placeholder="Image Color Name"
-                onChange={(e) => {
-                  dispatch(setDropImageColorName(e.target.value));
-                  dispatch(toggleImageColorNameErrorState(false));
-                }}
-              />
-            </div>
+            {contentType !== "tv" ? (
+              <div className="color-name" onClick={(e) => e.stopPropagation()}>
+                <input
+                  type="text"
+                  id={imgColorNameError ? "name-input-error" : "name-input"}
+                  placeholder="Image Color Name"
+                  onChange={(e) => {
+                    dispatch(setDropImageColorName(e.target.value));
+                    dispatch(toggleImageColorNameErrorState(false));
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
         ) : (
           <>

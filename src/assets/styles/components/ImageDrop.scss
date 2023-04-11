@@ -56,8 +56,16 @@
           background-color: rgba(180, 180, 180, 0.644);
           transition: all 0.2s ease-in-out;
 
+          &::placeholder {
+            color: rgb(70, 70, 70);
+          }
+
           &:focus {
             background-color: aliceblue;
+
+            &::placeholder {
+              color: rgb(195, 194, 194);
+            }
           }
         }
 
@@ -84,11 +92,16 @@
 
 .cell-drop-container {
   min-width: 280px;
+  max-width: 350px;
   width: auto;
   height: 420px;
   margin-bottom: 50px;
 
   .dropzone {
     height: 100%;
+
+    .drop-image-wrapper {
+      height: 420px;
+    }
   }
 }
