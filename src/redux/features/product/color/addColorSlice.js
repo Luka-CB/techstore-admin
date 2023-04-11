@@ -15,17 +15,18 @@ const addProductColorReducer = createSlice({
   reducers: {
     resetAddProductColor: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(addProductColor.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(addProductColor.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(addProductColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addProductColor.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
         state.addedColor = payload.addedColor;
-      }),
-      addCase(addProductColor.rejected, (state, { payload }) => {
+      })
+      .addCase(addProductColor.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

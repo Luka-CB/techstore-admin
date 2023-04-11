@@ -14,16 +14,17 @@ const deleteProductColorReducer = createSlice({
   reducers: {
     resetDeleteProductColor: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(deleteProductColor.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(deleteProductColor.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(deleteProductColor.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteProductColor.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
-      }),
-      addCase(deleteProductColor.rejected, (state, { payload }) => {
+      })
+      .addCase(deleteProductColor.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

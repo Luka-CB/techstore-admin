@@ -15,17 +15,18 @@ const getAllCustomersReducer = createSlice({
   reducers: {
     resetGetAllCustomers: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(getCustomers.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(getCustomers.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCustomers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCustomers.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.customers = payload.customers;
         state.paginationData = payload.paginationData;
-      }),
-      addCase(getCustomers.rejected, (state, { payload }) => {
+      })
+      .addCase(getCustomers.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

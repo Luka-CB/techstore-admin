@@ -15,17 +15,18 @@ const addImageReducer = createSlice({
   reducers: {
     resetAddImage: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(addImage.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(addImage.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(addImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addImage.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
         state.addedImage = payload.image;
-      }),
-      addCase(addImage.rejected, (state, { payload }) => {
+      })
+      .addCase(addImage.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

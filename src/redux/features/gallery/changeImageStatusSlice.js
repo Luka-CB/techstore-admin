@@ -14,16 +14,17 @@ const changeImageStatusReducer = createSlice({
   reducers: {
     resetChangeImageStatus: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(changeImageStatus.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(changeImageStatus.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(changeImageStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changeImageStatus.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
-      }),
-      addCase(changeImageStatus.rejected, (state, { payload }) => {
+      })
+      .addCase(changeImageStatus.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

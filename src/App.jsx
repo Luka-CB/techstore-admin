@@ -21,7 +21,7 @@ import Reviews from "./pages/Reviews";
 const App = () => {
   const [theme, colorMode] = useMode();
 
-  const { admin } = useSelector((state) => state.admin);
+  const { admin } = useSelector((state) => state.auth);
   const { isModalOpen } = useSelector((state) => state.states);
 
   useEffect(() => {

@@ -13,11 +13,12 @@ const imageColorCodeReducer = createSlice({
   reducers: {
     resetImageColorCode: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(getImageColorCode.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(getImageColorCode.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getImageColorCode.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getImageColorCode.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.colorCode = payload;

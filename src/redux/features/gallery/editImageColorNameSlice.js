@@ -24,17 +24,18 @@ const editImageColorNameReducer = createSlice({
       state.updatedImgColor = {};
     },
   },
-  extraReducers: ({ addCase }) => {
-    addCase(editImageColorName.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(editImageColorName.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(editImageColorName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editImageColorName.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
         state.updatedImgColor = payload.updatedImgColor;
-      }),
-      addCase(editImageColorName.rejected, (state, { payload }) => {
+      })
+      .addCase(editImageColorName.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

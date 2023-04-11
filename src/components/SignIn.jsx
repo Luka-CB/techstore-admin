@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAdmin } from "../redux/actions/adminActions";
-import { resetAdmin } from "../redux/features/admin/loginSlice";
+import { resetAuth } from "../redux/features/admin/authSlice";
 import { toggleErrorAlert } from "../redux/features/alertSlice";
 import { colorPallets } from "../theme";
 import CustomAlert from "./CustomAlert";
@@ -22,7 +22,7 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isLoading, isSuccess, error } = useSelector((state) => state.admin);
+  const { isLoading, isSuccess, errorMsg } = useSelector((state) => state.auth);
   const { errorAlert } = useSelector((state) => state.alert);
 
   const dispatch = useDispatch();
@@ -34,14 +34,14 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    if (error) {
+    if (errorMsg) {
       dispatch(toggleErrorAlert(true));
       setTimeout(() => {
         dispatch(toggleErrorAlert(false));
-        dispatch(resetAdmin());
+        dispatch(resetAuth());
       }, 3000);
     }
-  }, [error, dispatch]);
+  }, [errorMsg, dispatch]);
 
   return (
     <Box
@@ -59,7 +59,7 @@ const SignIn = () => {
       <CustomAlert
         severity={"error"}
         transitionState={errorAlert}
-        value={error}
+        value={errorMsg}
       />
       <Paper
         elevation={12}

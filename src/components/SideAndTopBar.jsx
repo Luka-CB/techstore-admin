@@ -33,10 +33,10 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAdmin } from "../redux/actions/adminActions";
 import { removeAllCheckItems } from "../redux/features/checkboxSlice";
 import { resetFilter } from "../redux/features/filterSlice";
 import TooltipTitle from "./TooltipTitle";
+import { logout } from "../redux/features/admin/authSlice";
 
 const drawerWidth = 250;
 
@@ -112,8 +112,6 @@ const SideAndTopBar = () => {
   const colors = colorPallets(theme.palette.mode);
   const [open, setOpen] = useState(false);
 
-  const { isSuccess } = useSelector((state) => state.logout);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -124,13 +122,6 @@ const SideAndTopBar = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-      window.location.reload();
-    }
-  }, [isSuccess]);
 
   const handleClickOnItem = () => {
     dispatch(removeAllCheckItems());
@@ -189,7 +180,7 @@ const SideAndTopBar = () => {
             <Box display="flex" alignItems="center">
               <IconButton
                 sx={{ display: "flex", alignItems: "flex-end" }}
-                onClick={() => dispatch(logoutAdmin())}
+                onClick={() => dispatch(logout())}
               >
                 <Typography mr={0.3}>Sign Out</Typography>
                 <AccountCircleOutlinedIcon sx={{ fontSize: "1.3rem" }} />

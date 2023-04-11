@@ -4,8 +4,17 @@ import axios from "../../utils/axios";
 export const addProductColor = createAsyncThunk(
   "ADD_PRODUCT_COLOR",
   async ({ route, color }, thunkAPI) => {
+    const {
+      auth: { admin },
+    } = thunkAPI.getState();
+
     try {
-      const { data } = await axios.put(`/api/admin/${route}/add-color`, color);
+      const { data } = await axios.put(`/api/admin/${route}/add-color`, color, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${admin.token}`,
+        },
+      });
 
       return data;
     } catch (error) {
@@ -22,8 +31,21 @@ export const addProductColor = createAsyncThunk(
 export const editProductColor = createAsyncThunk(
   "EDIT_PRODUCT_COLOR",
   async ({ route, color }, thunkAPI) => {
+    const {
+      auth: { admin },
+    } = thunkAPI.getState();
+
     try {
-      const { data } = await axios.put(`/api/admin/${route}/edit-color`, color);
+      const { data } = await axios.put(
+        `/api/admin/${route}/edit-color`,
+        color,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${admin.token}`,
+          },
+        }
+      );
 
       return data;
     } catch (error) {
@@ -40,10 +62,20 @@ export const editProductColor = createAsyncThunk(
 export const deleteProductColor = createAsyncThunk(
   "DELETE_PRODUCT_COLOR",
   async ({ route, ids }, thunkAPI) => {
+    const {
+      auth: { admin },
+    } = thunkAPI.getState();
+
     try {
       const { data } = await axios.put(
         `/api/admin/${route}/delete-color?productId=${ids.productId}&colorId=${ids.colorId}`,
-        {}
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${admin.token}`,
+          },
+        }
       );
 
       return data;

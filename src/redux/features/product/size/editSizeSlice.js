@@ -14,16 +14,17 @@ const editProductSizeReducer = createSlice({
   reducers: {
     resetEditProductSize: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(editProductSize.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(editProductSize.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(editProductSize.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editProductSize.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
-      }),
-      addCase(editProductSize.rejected, (state, { payload }) => {
+      })
+      .addCase(editProductSize.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

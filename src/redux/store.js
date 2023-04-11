@@ -1,6 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import adminSlice from "./features/admin/loginSlice";
-import logoutSlice from "./features/admin/logoutSlice";
 import alertSlice from "./features/alertSlice";
 import cameraInfoSlice from "./features/cameraInfoSlice";
 import imageSlice from "./features/imageSlice";
@@ -40,6 +38,7 @@ import delProductModalSlice from "./features/modals/delProductModalSlice";
 import delCustomerModalSlice from "./features/modals/delCustomerModalSlice";
 import deleteCustomersSlice from "./features/customers/deleteCustomersSlice";
 import getOrdersSlice from "./features/orders/getOrdersSlice";
+import authSlice from "./features/admin/authSlice";
 
 const store = configureStore({
   reducer: {
@@ -58,8 +57,7 @@ const store = configureStore({
     editColor: editColorSlice,
     deleteSize: deleteSizeSlice,
     deleteColor: deleteColorSlice,
-    admin: adminSlice,
-    logout: logoutSlice,
+    auth: authSlice,
     allCustomers: getAllSlice,
     changeAdminStatus: changeAdminStatusSlice,
     deleteCustomers: deleteCustomersSlice,

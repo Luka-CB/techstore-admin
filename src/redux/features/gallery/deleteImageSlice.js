@@ -14,16 +14,17 @@ const deleteImageReducer = createSlice({
   reducers: {
     resetDeleteImage: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(deleteImage.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(deleteImage.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(deleteImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteImage.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
-      }),
-      addCase(deleteImage.rejected, (state, { payload }) => {
+      })
+      .addCase(deleteImage.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });

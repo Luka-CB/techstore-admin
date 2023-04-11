@@ -218,11 +218,14 @@ const DataTable = ({
                         top: "60%",
                         left: "50%",
                         transform: "translateX(-50%)",
+                        textTransform: "capitalize",
                       }}
                     >
                       {contentType === "customer"
                         ? "No Customers!"
-                        : "No Products!"}
+                        : contentType === "accessory"
+                        ? `no accessories!`
+                        : `no ${contentType}s`}
                     </Typography>
                   ) : (
                     <>

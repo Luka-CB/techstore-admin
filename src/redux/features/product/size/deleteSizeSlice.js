@@ -14,16 +14,17 @@ const deleteProductSizeReducer = createSlice({
   reducers: {
     resetDeleteProductSize: () => initialState,
   },
-  extraReducers: ({ addCase }) => {
-    addCase(deleteProductSize.pending, (state) => {
-      state.isLoading = true;
-    }),
-      addCase(deleteProductSize.fulfilled, (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(deleteProductSize.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteProductSize.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.successMsg = payload.msg;
-      }),
-      addCase(deleteProductSize.rejected, (state, { payload }) => {
+      })
+      .addCase(deleteProductSize.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.errorMsg = payload;
       });
