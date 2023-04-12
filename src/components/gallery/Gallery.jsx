@@ -94,7 +94,6 @@ const Gallery = ({ contentType }) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "90%",
           minWidth: 250,
         }}
       >
@@ -116,10 +115,11 @@ const Gallery = ({ contentType }) => {
           <Paper
             elevation={12}
             onClick={(e) => e.stopPropagation()}
+            className="paper"
             sx={{
               minWidth: 250,
               minHeight: 400,
-              height: 700,
+              height: "90vh",
             }}
           >
             <Box p={2} textAlign="center">
