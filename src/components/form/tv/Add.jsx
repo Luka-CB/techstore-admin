@@ -62,11 +62,6 @@ const AddTv = () => {
       return;
     }
 
-    if (!dropImageData?.colorName) {
-      dispatch(toggleImageColorNameErrorState(true));
-      return;
-    }
-
     dispatch(
       addProduct({
         route: "tvs",
