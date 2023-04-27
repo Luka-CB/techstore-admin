@@ -22,7 +22,7 @@ import Search from "./Search";
 import { Link } from "react-router-dom";
 import ProductContent from "./product/ProductContent";
 import SizesConfig from "../form/SizesConfig";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Gallery from "../gallery/Gallery";
 import DeleteProductModal from "./product/DeleteProductModal";
 import MarkedState from "./MarkedState";
@@ -36,6 +36,9 @@ import OrderTableHead from "./order/OrderTableHead";
 import OrderContent from "./order/OrderContent";
 import TooltipTitle from "../TooltipTitle";
 import ShowMore from "../ShowMore";
+import SearchOrder from "./order/SearchOrder";
+import Options from "./order/Options";
+import { toggleOrderOptions } from "../../redux/features/stateSlice";
 
 const omitCreateBtn = ["customer", "order", "review"];
 
@@ -51,6 +54,7 @@ const DataTable = ({
   const colors = colorPallets(theme.palette.mode);
 
   const { searchQ } = useSelector((state) => state.filter);
+  const { isOrderOptionsOpen } = useSelector((state) => state.states);
   const { checkedData } = useSelector((state) => state.checkbox);
   const { isSizesModalOpen } = useSelector((state) => state.sizesModal);
   const { isColorsModalOpen } = useSelector((state) => state.colorsModal);
@@ -61,6 +65,13 @@ const DataTable = ({
   const { isDelCustomerModalOpen } = useSelector(
     (state) => state.delCustomerModal
   );
+
+  const dispatch = useDispatch();
+
+  const handleOpenOrderOptions = (e) => {
+    e.stopPropagation();
+    dispatch(toggleOrderOptions(true));
+  };
 
   return (
     <Box sx={{ width: "90%", margin: "30px auto" }}>
@@ -77,7 +88,12 @@ const DataTable = ({
             pr: { xs: 1, sm: 1 },
           }}
         >
-          <Box width="100%" display="flex" justifyContent="space-between">
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            className="table-header"
+          >
             <Typography variant="h6" id="tableTitle" component="div">
               Product:{" "}
               <span style={{ color: colors.secondary[500] }}>
@@ -93,8 +109,16 @@ const DataTable = ({
               />
             ) : (
               <>
-                <Search contentType={contentType} />
-                <Box display="flex" alignItems="center">
+                {contentType === "order" ? (
+                  <SearchOrder />
+                ) : (
+                  <Search contentType={contentType} />
+                )}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  className="total-count-cr-btn"
+                >
                   {contentType === "customer" ? (
                     <Typography variant="h6" mr="20px">
                       {content?.length > 1 ? "Total Customers" : "Customer"}:{" "}
@@ -132,21 +156,23 @@ const DataTable = ({
                       </span>
                     </Typography>
                   )}
-                  <Tooltip
-                    title={TooltipTitle("Filter list")}
-                    sx={{
-                      mr: "10px",
-                      transition: "0.2s ease-in-out",
-                      "&:hover": { color: colors.secondary[500] },
-                    }}
-                    placement="top"
-                    TransitionComponent={Zoom}
-                    arrow
-                  >
-                    <IconButton>
-                      <FilterListIcon sx={{ fontSize: "1.3rem" }} />
-                    </IconButton>
-                  </Tooltip>
+                  {contentType === "order" ? (
+                    <Tooltip
+                      title={TooltipTitle("Filter list")}
+                      sx={{
+                        mr: "10px",
+                        transition: "0.2s ease-in-out",
+                        "&:hover": { color: colors.secondary[500] },
+                      }}
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                    >
+                      <IconButton onClick={handleOpenOrderOptions}>
+                        <FilterListIcon sx={{ fontSize: "1.3rem" }} />
+                      </IconButton>
+                    </Tooltip>
+                  ) : null}
                   {!omitCreateBtn.includes(contentType) && (
                     <Link to={`/create/${contentType}`}>
                       <Tooltip
@@ -167,6 +193,8 @@ const DataTable = ({
                       </Tooltip>
                     </Link>
                   )}
+
+                  {isOrderOptionsOpen ? <Options /> : null}
                 </Box>
               </>
             )}
@@ -262,7 +290,7 @@ const DataTable = ({
         {!searchQ && totalProductCount > 4 && (
           <CustomPagination colors={colors} contentType={contentType} />
         )}
-        {contentType === "order" && content?.length > 20 ? (
+        {contentType === "order" && content?.length >= 20 ? (
           <ShowMore colors={colors} contentCount={content?.length} />
         ) : null}
       </Paper>

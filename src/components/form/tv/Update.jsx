@@ -95,7 +95,7 @@ const UpdateTv = () => {
   }, [errorMsg, dispatch]);
 
   return (
-    <Box sx={{ width: "70%", margin: "auto" }}>
+    <Box sx={{ margin: "auto" }} className="form-container">
       {successAlert && (
         <CustomAlert
           severity="success"

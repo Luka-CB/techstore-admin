@@ -179,7 +179,7 @@ const AddAccessory = () => {
   }, [errorMsg, dispatch]);
 
   return (
-    <Box sx={{ width: "70%", margin: "20px auto" }}>
+    <Box sx={{ margin: "20px auto" }} className="form-container">
       {successAlert && (
         <CustomAlert
           severity="success"

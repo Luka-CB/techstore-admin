@@ -6,6 +6,7 @@ const initialState = {
   imgColorNameError: false,
   showMainImgOverlay: false,
   showMainImgColorInfo: false,
+  isOrderOptionsOpen: false,
 };
 
 const stateReducer = createSlice({
@@ -27,6 +28,9 @@ const stateReducer = createSlice({
     toggleMainImgColorInfo: (state, { payload }) => {
       state.showMainImgColorInfo = payload;
     },
+    toggleOrderOptions: (state, { payload }) => {
+      state.isOrderOptionsOpen = payload;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   toggleImageColorNameErrorState,
   toggleMainImgOverlay,
   toggleMainImgColorInfo,
+  toggleOrderOptions,
 } = stateReducer.actions;
 
 export default stateReducer.reducer;

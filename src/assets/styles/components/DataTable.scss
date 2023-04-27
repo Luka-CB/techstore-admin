@@ -47,3 +47,49 @@
   width: auto;
   height: 200px;
 }
+
+@media (max-width: 1100px) {
+  #toggle-type,
+  #toggle-storage-ram,
+  #toggle-year,
+  #toggle-res,
+  #toggle-category,
+  #toggle-provider,
+  #toggle-provider-id {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  #toggle-brand,
+  #toggle-qty,
+  #toggle-email {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  #toggle-reg-at,
+  #toggle-reviews {
+    display: none;
+  }
+
+  .table-header {
+    flex-direction: column;
+
+    .search {
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .search-order {
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .total-count-cr-btn {
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+  }
+}

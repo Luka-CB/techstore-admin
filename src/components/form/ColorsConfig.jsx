@@ -62,189 +62,185 @@ const ColorsConfig = ({ contentType }) => {
         width: "100%",
         height: "100%",
         zIndex: 10001,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "70%",
-          minWidth: 250,
-          minHeight: 350,
-        }}
-      >
-        <Slide direction="down" in={isColorsModalOpen}>
-          <Paper
-            elevation={12}
-            onClick={(e) => e.stopPropagation()}
+      <Slide direction="down" in={isColorsModalOpen}>
+        <Paper
+          elevation={12}
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            width: "80%",
+            minHeight: 350,
+          }}
+        >
+          <Box
+            p={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h5">Add, Update or Remove Color</Typography>
+            <Tooltip
+              title={TooltipTitle("Add New Color")}
+              placement="top"
+              TransitionComponent={Zoom}
+              arrow
+              sx={{
+                transition: "0.2s ease-in-out",
+                "&:hover": { color: colors.secondary[500] },
+              }}
+              onClick={() => dispatch(toggleAddColorModal(true))}
+            >
+              <IconButton>
+                <AddCircleOutlineIcon sx={{ fontSize: "1.7rem" }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <Divider />
+          {colorsData.colors.length === 0 && (
+            <Typography
+              variant="h4"
+              color="error"
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              No Colors!
+            </Typography>
+          )}
+          <Box
             sx={{
-              minWidth: 250,
-              minHeight: 350,
+              width: "100%",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              justifyItems: "center",
+              gap: "2em",
+              margin: "10px 5px",
             }}
           >
-            <Box
-              p={2}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography variant="h5">Add, Update or Remove Color</Typography>
-              <Tooltip
-                title={TooltipTitle("Add New Color")}
-                placement="top"
-                TransitionComponent={Zoom}
-                arrow
+            {colorsData.colors.map((color) => (
+              <Paper
+                variant="outlined"
                 sx={{
-                  transition: "0.2s ease-in-out",
-                  "&:hover": { color: colors.secondary[500] },
-                }}
-                onClick={() => dispatch(toggleAddColorModal(true))}
-              >
-                <IconButton>
-                  <AddCircleOutlineIcon sx={{ fontSize: "1.7rem" }} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-            <Divider />
-            {colorsData.colors.length === 0 && (
-              <Typography
-                variant="h4"
-                color="error"
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
+                  width: 250,
+                  height: 140,
+                  display: "flex",
+                  borderRadius: 2,
                 }}
               >
-                No Colors!
-              </Typography>
-            )}
-            <Grid container rowSpacing={2} columnSpacing={2} p={2}>
-              {colorsData.colors.map((color) => (
-                <Grid item xs={3} key={color._id}>
-                  <Paper
-                    variant="outlined"
+                <Box
+                  width={100}
+                  position="relative"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Box
                     sx={{
-                      minWidth: 220,
-                      height: 140,
-                      display: "flex",
-                      borderRadius: 2,
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
+                      boxShadow: `0 0 8px ${color.code}`,
+                      backgroundColor: color.code,
                     }}
-                  >
-                    <Box
-                      width={100}
-                      position="relative"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
+                  ></Box>
+                </Box>
+                <Box display="flex" flex={1} flexDirection="column">
+                  <Typography variant="h6" sx={{ mt: 1 }}>
+                    Name:{" "}
+                    <span
+                      style={{
+                        color: colors.secondary[500],
+                        textTransform: "capitalize",
+                      }}
                     >
-                      <Box
-                        sx={{
-                          width: 80,
-                          height: 80,
-                          borderRadius: "50%",
-                          boxShadow: `0 0 8px ${color.code}`,
-                          backgroundColor: color.code,
-                        }}
-                      ></Box>
-                    </Box>
-                    <Box display="flex" flex={1} flexDirection="column">
-                      <Typography variant="h6" sx={{ mt: 1 }}>
-                        Name:{" "}
-                        <span
-                          style={{
-                            color: colors.secondary[500],
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {color.name}
-                        </span>
-                      </Typography>
-                      <Typography variant="h6">
-                        Code:{" "}
-                        <span style={{ color: colors.secondary[500] }}>
-                          {color.code}
-                        </span>
-                      </Typography>
-                      <Typography variant="h6">
-                        Qty:{" "}
-                        <span style={{ color: colors.secondary[500] }}>
-                          {color.qty}
-                        </span>
-                      </Typography>
-                      <Box
-                        alignSelf="flex-end"
-                        display="flex"
-                        justifyContent="space-around"
-                        sx={{ mt: 1, width: "100%" }}
-                      >
-                        <IconButton
-                          title={`Click to Edit "${color.name}"`}
-                          sx={{
-                            transition: "0.2s ease-in-out",
-                            "&:hover": { color: colors.secondary[500] },
-                          }}
-                          onClick={() => {
-                            dispatch(toggleEditColorModal(true));
-                            dispatch(setEditColorData(color));
-                          }}
-                        >
-                          <EditIcon sx={{ fontSize: "1.6rem" }} />
-                        </IconButton>
-                        <IconButton
-                          title={`Click to delete "${color.name}"`}
-                          sx={{
-                            transition: "0.2s ease-in-out",
-                            "&:hover": { color: colors.secondary[500] },
-                          }}
-                          onClick={() => {
-                            dispatch(toggleDelColorModal(true));
-                            dispatch(
-                              setDelColorModalData({
-                                productId: colorsData.productId,
-                                colorId: color._id,
-                              })
-                            );
-                          }}
-                        >
-                          <DeleteIcon sx={{ fontSize: "1.6rem" }} />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-            {isAddColorModalOpen && (
-              <AddColor
-                colors={colors}
-                id={colorsData.productId}
-                contentType={contentType}
-              />
-            )}
-            {isEditColorModalOpen && (
-              <EditColor
-                colors={colors}
-                productId={colorsData.productId}
-                contentType={contentType}
-              />
-            )}
-            {isDelColorModalOpen && (
-              <DeleteColorModal
-                colors={colors}
-                route={
-                  contentType === "accessory"
-                    ? "accessories"
-                    : `${contentType}s`
-                }
-              />
-            )}
-          </Paper>
-        </Slide>
-      </div>
+                      {color.name}
+                    </span>
+                  </Typography>
+                  <Typography variant="h6">
+                    Code:{" "}
+                    <span style={{ color: colors.secondary[500] }}>
+                      {color.code}
+                    </span>
+                  </Typography>
+                  <Typography variant="h6">
+                    Qty:{" "}
+                    <span style={{ color: colors.secondary[500] }}>
+                      {color.qty}
+                    </span>
+                  </Typography>
+                  <Box
+                    alignSelf="flex-end"
+                    display="flex"
+                    justifyContent="space-around"
+                    sx={{ mt: 1, width: "100%" }}
+                  >
+                    <IconButton
+                      title={`Click to Edit "${color.name}"`}
+                      sx={{
+                        transition: "0.2s ease-in-out",
+                        "&:hover": { color: colors.secondary[500] },
+                      }}
+                      onClick={() => {
+                        dispatch(toggleEditColorModal(true));
+                        dispatch(setEditColorData(color));
+                      }}
+                    >
+                      <EditIcon sx={{ fontSize: "1.6rem" }} />
+                    </IconButton>
+                    <IconButton
+                      title={`Click to delete "${color.name}"`}
+                      sx={{
+                        transition: "0.2s ease-in-out",
+                        "&:hover": { color: colors.secondary[500] },
+                      }}
+                      onClick={() => {
+                        dispatch(toggleDelColorModal(true));
+                        dispatch(
+                          setDelColorModalData({
+                            productId: colorsData.productId,
+                            colorId: color._id,
+                          })
+                        );
+                      }}
+                    >
+                      <DeleteIcon sx={{ fontSize: "1.6rem" }} />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Paper>
+            ))}
+          </Box>
+          {isAddColorModalOpen && (
+            <AddColor
+              colors={colors}
+              id={colorsData.productId}
+              contentType={contentType}
+            />
+          )}
+          {isEditColorModalOpen && (
+            <EditColor
+              colors={colors}
+              productId={colorsData.productId}
+              contentType={contentType}
+            />
+          )}
+          {isDelColorModalOpen && (
+            <DeleteColorModal
+              colors={colors}
+              route={
+                contentType === "accessory" ? "accessories" : `${contentType}s`
+              }
+            />
+          )}
+        </Paper>
+      </Slide>
     </Box>
   );
 };

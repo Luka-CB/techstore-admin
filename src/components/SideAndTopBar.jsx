@@ -179,6 +179,7 @@ const SideAndTopBar = () => {
               }
               variant="h1"
               fontWeight="500"
+              id="title"
             >
               Techstore Admin
             </Typography>

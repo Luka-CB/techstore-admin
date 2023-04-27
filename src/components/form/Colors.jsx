@@ -14,69 +14,74 @@ const Colors = ({ productColors, setColors, storageName }) => {
 
   return (
     <Box
-      display="grid"
+      display="flex"
+      alignItems="center"
       sx={{
         p: "10px",
         mt: "20px",
         width: "100%",
         minHeight: "20px",
-        gridTemplateColumns: "repeat(8, 1fr)",
-        gap: 1,
-        alignItems: "center",
         backgroundColor:
           theme.palette.mode === "dark" ? colors.light[900] : colors.light[300],
         borderRadius: "15px",
       }}
     >
-      <Typography variant="h6" color={colors.light[600]}>
+      <Typography width={130} variant="h6" color={colors.light[600]}>
         Chosen Colors:
       </Typography>
-      {productColors.map((color) => (
-        <Tooltip
-          title={TooltipTitle("Double Click to Remove Color")}
-          arrow
-          TransitionComponent={Zoom}
-          key={color.name}
-        >
-          <Box
-            onDoubleClick={() => removeColorHandler(color.name)}
-            sx={{
-              backgroundColor: colors.light[100],
-              ml: "10px",
-              p: "5px",
-              color: colors.light[900],
-              borderRadius: "10px",
-              boxShadow: "0 0 10px rgba(224, 14, 243, 0.233)",
-              transition: "0.2s ease-in-out",
-              cursor: "pointer",
-              "&:hover": {
-                backgroundColor:
-                  theme.palette.mode === "dark"
-                    ? "rgb(190, 179, 179)"
-                    : "rgb(85, 85, 85)",
-              },
-            }}
+      <Box className="colors-wrapper">
+        {productColors.map((color) => (
+          <Tooltip
+            title={TooltipTitle("Double Click to Remove Color")}
+            arrow
+            TransitionComponent={Zoom}
+            key={color.name}
           >
-            <Typography variant="body2" textTransform="capitalize">
-              Name: {color.name}
-            </Typography>
-            <Box variant="body2" sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="body2">Color:</Typography>
-              <div
-                style={{
-                  marginLeft: "5px",
-                  display: "inline-block",
-                  width: "15px",
-                  height: "15px",
-                  backgroundColor: color.code,
-                  boxShadow: "0 0 1px black",
-                }}
-              ></div>
+            <Box
+              onDoubleClick={() => removeColorHandler(color.name)}
+              sx={{
+                minWidth: 60,
+                maxWidth: 120,
+                backgroundColor: colors.light[100],
+                ml: "10px",
+                p: "5px",
+                color: colors.light[900],
+                borderRadius: "10px",
+                boxShadow: "0 0 10px rgba(224, 14, 243, 0.233)",
+                transition: "0.2s ease-in-out",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor:
+                    theme.palette.mode === "dark"
+                      ? "rgb(190, 179, 179)"
+                      : "rgb(85, 85, 85)",
+                },
+              }}
+            >
+              <Typography variant="body2" textTransform="capitalize">
+                Name: {color.name}
+              </Typography>
+              <Box
+                variant="body2"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Typography variant="body2">Color:</Typography>
+                <div
+                  style={{
+                    marginLeft: "5px",
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: color.code,
+                    boxShadow: "0 0 1px black",
+                  }}
+                ></div>
+              </Box>
+              <Typography variant="body2">Quantity: {color.qty}</Typography>
             </Box>
-            <Typography variant="body2">Quantity: {color.qty}</Typography>
-          </Box>
-        </Tooltip>
-      ))}
+          </Tooltip>
+        ))}
+      </Box>
     </Box>
   );
 };

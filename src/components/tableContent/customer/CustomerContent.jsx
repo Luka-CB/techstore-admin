@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { colorPallets } from "../../../theme";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from "@mui/icons-material/Launch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -39,8 +39,18 @@ import {
   toggleDelCustomerModal,
 } from "../../../redux/features/modals/delCustomerModalSlice";
 import TooltipTitle from "../../TooltipTitle";
+import {
+  setOrderIdsModalData,
+  toggleOrderIdsModal,
+} from "../../../redux/features/modals/orderIdsModalSlice";
+import {
+  setUserId,
+  toggleCustomerReviewsModal,
+} from "../../../redux/features/modals/customerReviewsModalSlice";
 
 const CustomerContent = ({ data, contentType }) => {
+  const [showLaunchIcon, setShowLaunchIcon] = useState(false);
+  const [showReviewsLaunchIcon, setShowReviewsLaunchIcon] = useState(false);
   const [isItemChecked, setIsItemChecked] = useState(false);
 
   const theme = useTheme();
@@ -55,7 +65,6 @@ const CustomerContent = ({ data, contentType }) => {
     successMsg: changeStatusSuccessMsg,
   } = useSelector((state) => state.changeAdminStatus);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [configAnchorEl, setConfigAnchorEl] = useState(null);
@@ -76,8 +85,6 @@ const CustomerContent = ({ data, contentType }) => {
   };
   const openStatus = Boolean(statusAnchorEl);
   const id = openStatus ? "status-popover" : undefined;
-
-  const updNavigationHandler = () => {};
 
   const deletehandler = () => {
     handleConfigClose();
@@ -120,6 +127,26 @@ const CustomerContent = ({ data, contentType }) => {
     }
   }, [isChangeStatusSuccess, dispatch]);
 
+  const handleOpenOrderIdsModal = () => {
+    if (data?.orders?.length === 0) {
+      return;
+    }
+
+    dispatch(setOrderIdsModalData(data.orders));
+    dispatch(toggleOrderIdsModal(true));
+    dispatch(toggleIsModalOpen(true));
+  };
+
+  const handleOpenCustomerReviewsModal = () => {
+    if (data.reviews?.length === 0) {
+      return;
+    }
+
+    dispatch(setUserId(data._id));
+    dispatch(toggleCustomerReviewsModal(true));
+    dispatch(toggleIsModalOpen(true));
+  };
+
   return (
     <>
       {successAlert && isChangeStatusSuccess && (
@@ -142,22 +169,100 @@ const CustomerContent = ({ data, contentType }) => {
         </TableCell>
         <TableCell align="left">{data?._id}</TableCell>
         <TableCell align="center">{data?.username}</TableCell>
-        <TableCell align="center">
+        <TableCell align="center" id="toggle-email">
           {data?.email ? (
             data.email
           ) : (
             <CloseIcon color="error" sx={{ fontSize: "1.3rem" }} />
           )}
         </TableCell>
-        <TableCell align="center">{data?.provider}</TableCell>
-        <TableCell align="center">
+        <TableCell align="center" id="toggle-provider">
+          {data?.provider}
+        </TableCell>
+        <TableCell align="center" id="toggle-provider-id">
           {data?.providerId ? (
             data.providerId
           ) : (
             <CloseIcon color="error" sx={{ fontSize: "1.3rem" }} />
           )}
         </TableCell>
-        <TableCell align="center">{data?.createdAt}</TableCell>
+        <TableCell align="center">
+          <Tooltip
+            title={
+              data?.orders?.length > 0
+                ? TooltipTitle("See Order IDs")
+                : undefined
+            }
+            placement="top"
+            TransitionComponent={Zoom}
+            arrow
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                width: "70px",
+                height: "60px",
+                margin: "auto",
+                position: "relative",
+                cursor: data?.orders?.length > 0 && "pointer",
+                transition: "0.2s ease-in-out",
+                "&:hover": { color: colors.secondary[500] },
+              }}
+              onMouseEnter={() => setShowLaunchIcon(true)}
+              onMouseLeave={() => setShowLaunchIcon(false)}
+              onClick={handleOpenOrderIdsModal}
+            >
+              {data?.orders?.length}
+              {showLaunchIcon && data?.orders?.length > 0 ? (
+                <LaunchIcon
+                  sx={{ position: "absolute", right: 0, bottom: "100%" }}
+                />
+              ) : null}
+            </Box>
+          </Tooltip>
+        </TableCell>
+        <TableCell align="center" id="toggle-reviews">
+          <Tooltip
+            title={
+              data?.reviews?.length > 0
+                ? TooltipTitle("See Reviews")
+                : undefined
+            }
+            placement="top"
+            TransitionComponent={Zoom}
+            arrow
+          >
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                width: "70px",
+                height: "60px",
+                margin: "auto",
+                position: "relative",
+                cursor: data?.reviews?.length > 0 && "pointer",
+                transition: "0.2s ease-in-out",
+                "&:hover": { color: colors.secondary[500] },
+              }}
+              onMouseEnter={() => setShowReviewsLaunchIcon(true)}
+              onMouseLeave={() => setShowReviewsLaunchIcon(false)}
+              onClick={handleOpenCustomerReviewsModal}
+            >
+              {data.reviews?.length}
+              {showReviewsLaunchIcon && data?.reviews?.length > 0 ? (
+                <LaunchIcon
+                  sx={{ position: "absolute", right: 0, bottom: "100%" }}
+                />
+              ) : null}
+            </Box>
+          </Tooltip>
+        </TableCell>
+        <TableCell align="center" id="toggle-reg-at">
+          {data?.createdAt}
+        </TableCell>
         <Tooltip
           title={
             data?.username !== "admin"

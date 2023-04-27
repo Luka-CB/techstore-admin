@@ -105,7 +105,7 @@ const UpdateComputer = () => {
   }, [errorMsg, dispatch]);
 
   return (
-    <Box sx={{ width: "70%", margin: "auto" }}>
+    <Box sx={{ margin: "auto" }} className="form-container">
       {successAlert && (
         <CustomAlert
           severity="success"
@@ -256,6 +256,7 @@ const UpdateComputer = () => {
                 sx={{ width: "30%" }}
               />
               <TextField
+                type="number"
                 color="secondary"
                 variant="outlined"
                 label="Product Ram *"

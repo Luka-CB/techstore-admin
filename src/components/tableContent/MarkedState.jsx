@@ -30,6 +30,8 @@ import {
   getCustomers,
 } from "../../redux/actions/customerActions";
 import TooltipTitle from "../TooltipTitle";
+import { resetDeleteOrders } from "../../redux/features/orders/deleteOrdersSlice";
+import { deleteOrders, getOrders } from "../../redux/actions/orderActions";
 
 const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,6 +50,12 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
     successMsg: deleteCustomersSuccessMsg,
     errorMsg: deleteCustomersErrorMsg,
   } = useSelector((state) => state.deleteCustomers);
+  const {
+    isLoading: isDeleteOrdersLoading,
+    isSuccess: isDeleteOrdersSuccess,
+    successMsg: deleteOrdersSuccessMsg,
+    errorMsg: deleteOrdersErrorMsg,
+  } = useSelector((state) => state.deleteOrders);
 
   const dispatch = useDispatch();
 
@@ -89,6 +97,18 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
   }, [isDeleteCustomersSuccess, dispatch]);
 
   useEffect(() => {
+    if (isDeleteOrdersSuccess) {
+      dispatch(toggleSuccessAlert(true));
+      setTimeout(() => {
+        dispatch(toggleSuccessAlert(false));
+        dispatch(removeAllCheckItems());
+        dispatch(resetDeleteOrders());
+        dispatch(getOrders({ rppn: 0, orderId: "", userId: "", sortBy: "" }));
+      }, 3000);
+    }
+  }, [isDeleteOrdersSuccess, dispatch]);
+
+  useEffect(() => {
     if (deleteProductsErrorMsg) {
       dispatch(toggleErrorAlert(true));
       setTimeout(() => {
@@ -108,25 +128,46 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
     }
   }, [deleteCustomersErrorMsg, dispatch]);
 
+  useEffect(() => {
+    if (deleteOrdersErrorMsg) {
+      dispatch(toggleErrorAlert(true));
+      setTimeout(() => {
+        dispatch(toggleErrorAlert(false));
+        dispatch(resetDeleteOrders());
+      }, 3000);
+    }
+  }, [deleteOrdersErrorMsg, dispatch]);
+
   const isLoading =
     contentType === "customer"
       ? isDeleteCustomersLoading
+      : contentType === "order"
+      ? isDeleteOrdersLoading
       : isDeleteProductsLoading;
+
   const successMsg =
     contentType === "customer"
       ? deleteCustomersSuccessMsg
+      : contentType === "order"
+      ? deleteOrdersSuccessMsg
       : deleteProductsSuccessMsg;
+
   const errorMsg =
     contentType === "customer"
       ? deleteCustomersErrorMsg
+      : contentType === "order"
+      ? deleteOrdersErrorMsg
       : deleteProductsErrorMsg;
 
   const handleDelete = () => {
     if (contentType === "customer") {
       dispatch(deleteCustomers({ userIds: markedIds }));
+    } else if (contentType === "order") {
+      dispatch(deleteOrders(markedIds));
     } else {
       dispatch(deleteManyProduct({ route, productIds: markedIds }));
     }
+
     handleClose();
   };
 
@@ -137,20 +178,20 @@ const MarkedState = ({ colors, markedItemCount, contentType, markedIds }) => {
       justifyContent="space-between"
       width={350}
     >
-      {successAlert && (
+      {successAlert && successMsg ? (
         <CustomAlert
           severity="success"
           value={successMsg}
           transitionState={successAlert}
         />
-      )}
-      {errorAlert && (
+      ) : null}
+      {errorAlert && errorMsg ? (
         <CustomAlert
           severity="error"
           value={errorMsg}
           transitionState={errorAlert}
         />
-      )}
+      ) : null}
       <Typography variant="h6">
         Marked Items:{" "}
         <span style={{ color: colors.secondary[500], fontSize: "1.2rem" }}>

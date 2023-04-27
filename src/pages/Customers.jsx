@@ -1,10 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomerReviewsModal from "../components/tableContent/customer/CustomerReviewsModal";
+import OrderIdsModal from "../components/tableContent/customer/OrderIdsModal";
 import DataTable from "../components/tableContent/DataTable";
 import { getCustomers } from "../redux/actions/customerActions";
 
 const Customers = () => {
   const { searchQ, perPage } = useSelector((state) => state.filter);
+  const { isOrderIdsModalOpen } = useSelector((state) => state.orderIdsModal);
+  const { isCustomerReviewsModalOpen } = useSelector(
+    (state) => state.customerReviewsModal
+  );
 
   const { customers, paginationData, isLoading } = useSelector(
     (state) => state.allCustomers
@@ -24,6 +30,9 @@ const Customers = () => {
         totalProductCount={paginationData && paginationData.totalDocs}
         contentLoading={isLoading}
       />
+
+      {isOrderIdsModalOpen ? <OrderIdsModal /> : null}
+      {isCustomerReviewsModalOpen ? <CustomerReviewsModal /> : null}
     </div>
   );
 };

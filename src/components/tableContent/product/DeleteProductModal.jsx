@@ -78,20 +78,20 @@ const DeleteProductModal = ({ colors, contentType }) => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {successAlert && (
+        {successAlert && isDelProductModalOpen ? (
           <CustomAlert
             severity="success"
             value={successMsg}
             transitionState={successAlert}
           />
-        )}
-        {errorAlert && (
+        ) : null}
+        {errorAlert && isDelProductModalOpen ? (
           <CustomAlert
             severity="error"
             value={errorMsg}
             transitionState={errorAlert}
           />
-        )}
+        ) : null}
         <Zoom in={isDelProductModalOpen}>
           <Paper
             variant="outlined"

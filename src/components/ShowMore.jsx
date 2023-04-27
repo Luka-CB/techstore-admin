@@ -9,7 +9,7 @@ const ShowMore = ({ colors, contentCount }) => {
   const dispatch = useDispatch();
 
   const handleShowMore = () => {
-    dispatch(getOrders(contentCount + 2));
+    dispatch(getOrders({ rppn: contentCount + 20, orderId: "", userId: "" }));
   };
 
   return (

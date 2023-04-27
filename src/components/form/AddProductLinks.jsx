@@ -29,7 +29,8 @@ const AddProductLinks = ({ excludeLink }) => {
       display="flex"
       justifyContent="space-between"
       alignSelf="flex-end"
-      sx={{ width: "30%", color: colors.light[400] }}
+      sx={{ width: 300, color: colors.light[400] }}
+      className="product-links"
     >
       {linksFiltered.map((link) => (
         <Typography

@@ -38,6 +38,7 @@ const Search = ({ contentType }) => {
       width={300}
       position="relative"
       sx={{ display: "flex", alignItems: "flex-end" }}
+      className="search"
     >
       <PageviewOutlinedIcon
         color="secondary"
@@ -45,11 +46,7 @@ const Search = ({ contentType }) => {
       />
       <TextField
         id="input-with-sx"
-        label={
-          contentType === "order"
-            ? "Search by username or order id"
-            : `Search ${contentType}s`
-        }
+        label={`Search ${contentType}s`}
         variant="standard"
         color="secondary"
         fullWidth

@@ -39,6 +39,20 @@ import delCustomerModalSlice from "./features/modals/delCustomerModalSlice";
 import deleteCustomersSlice from "./features/customers/deleteCustomersSlice";
 import getOrdersSlice from "./features/orders/getOrdersSlice";
 import authSlice from "./features/admin/authSlice";
+import orderItemsSlice from "./features/orders/orderItemsSlice";
+import updateDeliveredStateSlice from "./features/orders/updateDeliveredStateSlice";
+import deleteOrderSlice from "./features/orders/deleteOrderSlice";
+import delOrderModalSlice from "./features/modals/delOrderModalSlice";
+import orderIdsModalSlice from "./features/modals/orderIdsModalSlice";
+import deleteOrdersSlice from "./features/orders/deleteOrdersSlice";
+import getReviewsSlice from "./features/reviews/getReviewsSlice";
+import postModalSlice from "./features/modals/postModalSlice";
+import delReviewModalSlice from "./features/modals/delReviewModalSlice";
+import deleteReviewSlice from "./features/reviews/deleteReviewSlice";
+import getProductReviewsSlice from "./features/reviews/getProductReviewsSlice";
+import customerReviewsModalSlice from "./features/modals/customerReviewsModalSlice";
+import getReviewsByUserIdSlice from "./features/reviews/getReviewsByUserIdSlice";
+import getInfoSlice from "./features/dashboard/getInfoSlice";
 
 const store = configureStore({
   reducer: {
@@ -62,6 +76,7 @@ const store = configureStore({
     changeAdminStatus: changeAdminStatusSlice,
     deleteCustomers: deleteCustomersSlice,
     deleteCustomer: deleteCustomerSlice,
+    customerReviewsModal: customerReviewsModalSlice,
     alert: alertSlice,
     gallery: gallerySlice,
     addImage: addImageSlice,
@@ -78,10 +93,23 @@ const store = configureStore({
     delColorModal: delColorModalSlice,
     delProductModal: delProductModalSlice,
     delCustomerModal: delCustomerModalSlice,
+    orderIdsModal: orderIdsModalSlice,
     updProductInfo: updProductInfoSlice,
     checkbox: checkboxSlice,
     filter: filterSlice,
     getOrders: getOrdersSlice,
+    orderItems: orderItemsSlice,
+    updateDeliveredState: updateDeliveredStateSlice,
+    deleteOrder: deleteOrderSlice,
+    deleteOrders: deleteOrdersSlice,
+    delOrderModal: delOrderModalSlice,
+    getReviews: getReviewsSlice,
+    getProductReviews: getProductReviewsSlice,
+    getReviewsByUserId: getReviewsByUserIdSlice,
+    deleteReview: deleteReviewSlice,
+    postModal: postModalSlice,
+    delReviewModal: delReviewModalSlice,
+    dashboardInfo: getInfoSlice,
   },
 });
 

@@ -1,0 +1,67 @@
+.customer-reviews-bg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .customer-reviews-container {
+    width: 90%;
+    height: 90vh;
+    position: relative;
+
+    .customer-reviews-header {
+      box-shadow: 0 8px 8px -4px rgba(0, 0, 0, 0.5);
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .customer-reviews {
+      width: 100%;
+      height: calc(90vh - 50px);
+      overflow-y: scroll;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      justify-items: center;
+      gap: 2em;
+      padding: 20px 10px;
+
+      /* width */
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px rgb(199, 199, 199);
+        border-radius: 10px;
+        background-color: rgb(182, 182, 182);
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: rgb(100, 99, 99);
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: rgb(250, 250, 250);
+      }
+
+      .spinner {
+        height: calc(90vh - 50px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}

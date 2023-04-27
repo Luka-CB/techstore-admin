@@ -221,29 +221,41 @@ const ProductContent = ({ data, contentType }) => {
           </Box>
         </Tooltip>
       </TableCell>
-      <TableCell align="center">{data?.brand}</TableCell>
+      <TableCell align="center" id="toggle-brand">
+        {data?.brand}
+      </TableCell>
       {contentType === "accessory" && (
-        <TableCell align="center">{data?.category}</TableCell>
+        <TableCell align="center" id="toggle-category">
+          {data?.category}
+        </TableCell>
       )}
       {contentType === "computer" && (
-        <TableCell align="center">{data?.type}</TableCell>
+        <TableCell align="center" id="toggle-type">
+          {data?.type}
+        </TableCell>
       )}
       {contentType === "cellphone" && (
-        <TableCell align="center">{data?.year}</TableCell>
+        <TableCell align="center" id="toggle-year">
+          {data?.year}
+        </TableCell>
       )}
       {contentType === "tv" && (
-        <TableCell align="center">{data?.year}</TableCell>
+        <TableCell align="center" id="toggle-year">
+          {data?.year}
+        </TableCell>
       )}
       {contentType === "tv" && (
-        <TableCell align="center">{data?.resolution}</TableCell>
+        <TableCell align="center" id="toggle-res">
+          {data?.resolution}
+        </TableCell>
       )}
       {contentType === "computer" && (
-        <TableCell align="center">
+        <TableCell align="center" id="toggle-storage-ram">
           {data?.storage?.size} GB / {data?.ram}
         </TableCell>
       )}
       {contentType === "cellphone" && (
-        <TableCell align="center">
+        <TableCell align="center" id="toggle-storage-ram">
           {data?.memory?.internal} / {data?.memory?.ram}
         </TableCell>
       )}
@@ -377,9 +389,13 @@ const ProductContent = ({ data, contentType }) => {
           </Box>
         )}
       </TableCell>
-      <TableCell align="center">{data?.totalQty}</TableCell>
+      <TableCell align="center" id="toggle-qty">
+        {data?.totalQty}
+      </TableCell>
       {contentType !== "tv" && (
-        <TableCell align="center">${data?.price}</TableCell>
+        <TableCell align="center" id="toggle-price">
+          ${data?.price}
+        </TableCell>
       )}
       <TableCell align="right">
         <IconButton

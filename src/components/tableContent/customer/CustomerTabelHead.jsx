@@ -38,16 +38,38 @@ const CustomerTableHead = ({ content, contentType }) => {
         <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
           Username
         </TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell align="center" id="toggle-email" sx={{ fontSize: "0.7rem" }}>
           Email
         </TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell
+          align="center"
+          id="toggle-provider"
+          sx={{ fontSize: "0.7rem" }}
+        >
           Signed In With
         </TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell
+          align="center"
+          id="toggle-provider-id"
+          sx={{ fontSize: "0.7rem" }}
+        >
           Provider ID
         </TableCell>
         <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          Orders
+        </TableCell>
+        <TableCell
+          align="center"
+          id="toggle-reviews"
+          sx={{ fontSize: "0.7rem" }}
+        >
+          Reviews
+        </TableCell>
+        <TableCell
+          align="center"
+          id="toggle-reg-at"
+          sx={{ fontSize: "0.7rem" }}
+        >
           Registered At
         </TableCell>
         <TableCell align="center" sx={{ fontSize: "0.7rem" }}>

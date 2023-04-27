@@ -35,55 +35,87 @@ const ProductTableHead = ({ content, contentType }) => {
           />
         </TableCell>
         <TableCell sx={{ fontSize: "0.7rem" }}>Product Name</TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell align="center" id="toggle-image" sx={{ fontSize: "0.7rem" }}>
           Image
         </TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell align="center" id="toggle-brand" sx={{ fontSize: "0.7rem" }}>
           Brand
         </TableCell>
         {contentType === "accessory" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-category"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Category
           </TableCell>
         )}
         {contentType === "computer" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-type"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Type
           </TableCell>
         )}
         {contentType === "cellphone" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-year"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Year
           </TableCell>
         )}
         {contentType === "tv" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-year"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Year
           </TableCell>
         )}
         {contentType === "tv" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell align="center" id="toggle-res" sx={{ fontSize: "0.7rem" }}>
             Resolution
           </TableCell>
         )}
         {contentType === "computer" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-storage-ram"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Storage/Ram
           </TableCell>
         )}
         {contentType === "cellphone" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-storage-ram"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Storage/Ram
           </TableCell>
         )}
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell
+          align="center"
+          id="toggle-color-size"
+          sx={{ fontSize: "0.7rem" }}
+        >
           {contentType === "tv" ? "Sizes" : "Colors"}
         </TableCell>
-        <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+        <TableCell align="center" id="toggle-qty" sx={{ fontSize: "0.7rem" }}>
           Quantity
         </TableCell>
         {contentType !== "tv" && (
-          <TableCell align="center" sx={{ fontSize: "0.7rem" }}>
+          <TableCell
+            align="center"
+            id="toggle-price"
+            sx={{ fontSize: "0.7rem" }}
+          >
             Price
           </TableCell>
         )}

@@ -206,7 +206,7 @@ const AddComputer = () => {
   }, [errorMsg, dispatch]);
 
   return (
-    <Box sx={{ width: "70%", margin: "20px auto" }}>
+    <Box sx={{ margin: "20px auto" }} className="form-container">
       {successAlert && (
         <CustomAlert
           severity="success"
@@ -342,6 +342,7 @@ const AddComputer = () => {
                 sx={{ width: "30%" }}
               />
               <TextField
+                type="number"
                 color="secondary"
                 variant="outlined"
                 label="Product Ram *"

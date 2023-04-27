@@ -1,9 +1,11 @@
 import {
   Box,
+  CircularProgress,
   Divider,
   IconButton,
   Paper,
   Tooltip,
+  Typography,
   useTheme,
   Zoom,
 } from "@mui/material";
@@ -18,12 +20,19 @@ import { colorPallets } from "../theme";
 import ProductInfo from "../components/productDetails/ProductInfo";
 import ProductColors from "../components/productDetails/ProductColors";
 import TooltipTitle from "../components/TooltipTitle";
+import ReviewCard from "../components/reviews/ReviewCard";
+import { getProductReviews } from "../redux/actions/reviewActions";
 
 const Details = () => {
   const theme = useTheme();
   const colors = colorPallets(theme.palette.mode);
 
-  const { product, isLoading } = useSelector((state) => state.getProduct);
+  const { product, isLoading: isGetProductLoading } = useSelector(
+    (state) => state.getProduct
+  );
+  const { isLoading: isGetReviewsLodaing, reviews } = useSelector(
+    (state) => state.getProductReviews
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +42,10 @@ const Details = () => {
 
   useEffect(() => {
     dispatch(getProduct({ route, productId: id }));
-  }, [id]);
+    dispatch(getProductReviews(id));
+  }, [dispatch, id]);
+
+  console.log(reviews);
 
   return (
     <Box>
@@ -67,64 +79,110 @@ const Details = () => {
             <ArrowCircleLeftIcon sx={{ fontSize: "2rem" }} />
           </IconButton>
         </Tooltip>
-        {product && (
-          <ProductInfo
-            colors={colors}
-            data={{ ...product, images: null, sizes: null, colors: null }}
-            contentType={contentType}
-          />
-        )}
-        <Divider
-          orientation="horizontal"
-          flexItem
-          sx={{
-            mt: "30px",
-            fontSize: "1rem",
-            textTransform: "uppercase",
-            letterSpacing: "5px",
-            color:
-              theme.palette.mode === "dark"
-                ? colors.light[800]
-                : colors.light[400],
-          }}
-        >
-          Images ({product?.images?.length})
-        </Divider>
-        {product.images && (
-          <ProductImageGallery
-            images={product.images}
-            contentType={contentType}
-          />
-        )}
-        <Divider
-          orientation="horizontal"
-          flexItem
-          sx={{
-            mt: "30px",
-            fontSize: "1rem",
-            textTransform: "uppercase",
-            letterSpacing: "5px",
-            color:
-              theme.palette.mode === "dark"
-                ? colors.light[800]
-                : colors.light[400],
-          }}
-        >
-          {contentType === "tv"
-            ? `Sizes (${product?.sizes?.length})`
-            : `Colors (${product?.colors?.length})`}
-        </Divider>
-        {contentType === "tv" ? (
-          <ProductSizes
-            colors={colors}
-            sizes={product.sizes && product.sizes}
-          />
+        {isGetProductLoading ? (
+          <Box
+            sx={{
+              height: "50vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={60} color="secondary" />
+          </Box>
         ) : (
-          <ProductColors
-            themeColors={colors}
-            colors={product.colors && product.colors}
-          />
+          <>
+            {product && (
+              <ProductInfo
+                colors={colors}
+                data={{ ...product, images: null, sizes: null, colors: null }}
+                contentType={contentType}
+              />
+            )}
+            <Divider
+              orientation="horizontal"
+              flexItem
+              sx={{
+                mt: "30px",
+                fontSize: "1rem",
+                textTransform: "uppercase",
+                letterSpacing: "5px",
+                color:
+                  theme.palette.mode === "dark"
+                    ? colors.light[800]
+                    : colors.light[400],
+              }}
+            >
+              Images ({product?.images?.length})
+            </Divider>
+            {product.images && (
+              <ProductImageGallery
+                images={product.images}
+                contentType={contentType}
+              />
+            )}
+            <Divider
+              orientation="horizontal"
+              flexItem
+              sx={{
+                mt: "30px",
+                fontSize: "1rem",
+                textTransform: "uppercase",
+                letterSpacing: "5px",
+                color:
+                  theme.palette.mode === "dark"
+                    ? colors.light[800]
+                    : colors.light[400],
+              }}
+            >
+              {contentType === "tv"
+                ? `Sizes (${product?.sizes?.length})`
+                : `Colors (${product?.colors?.length})`}
+            </Divider>
+            {contentType === "tv" ? (
+              <ProductSizes
+                colors={colors}
+                sizes={product.sizes && product.sizes}
+              />
+            ) : (
+              <ProductColors
+                themeColors={colors}
+                colors={product.colors && product.colors}
+              />
+            )}
+          </>
         )}
+        <Divider
+          orientation="horizontal"
+          flexItem
+          sx={{
+            mt: "30px",
+            fontSize: "1rem",
+            textTransform: "uppercase",
+            letterSpacing: "5px",
+            color:
+              theme.palette.mode === "dark"
+                ? colors.light[800]
+                : colors.light[400],
+          }}
+        >
+          reviews ({reviews?.length})
+        </Divider>
+        <Box className="product-reviews">
+          {isGetReviewsLodaing ? (
+            <Box className="spinner">
+              <CircularProgress size={60} color="secondary" />
+            </Box>
+          ) : reviews?.length === 0 ? (
+            <p id="no-reviews">no reviews!</p>
+          ) : (
+            <>
+              {reviews?.map((review) => (
+                <ReviewCard key={review._id} data={review} />
+              ))}
+            </>
+          )}
+        </Box>
       </Paper>
     </Box>
   );
