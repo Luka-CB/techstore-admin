@@ -20,7 +20,7 @@ export const computerFormSchema = yup.object().shape({
   name: yup.string().required("Please Fill in the Field!"),
   storagetype: yup.string().required("Please Fill in the Field!"),
   size: yup.number().required("Please Fill in the Field!"),
-  camera: yup.string().required("Please Fill in the Field!"),
+  camera: yup.string(),
   weight: yup.string().required("Please Fill in the Field!"),
   price: yup.number().required("Please Fill in the Field!"),
 });
