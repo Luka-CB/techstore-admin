@@ -15,7 +15,7 @@ export const computerFormSchema = yup.object().shape({
   processor: yup.string().required("Please Fill in the Field!"),
   os: yup.string().required("Please Fill in the Field!"),
   graphics: yup.string().required("Please Fill in the Field!"),
-  screen: yup.string().required("Please Fill in the Field!"),
+  screen: yup.string(),
   ram: yup.number().required("Please Fill in the Field!"),
   name: yup.string().required("Please Fill in the Field!"),
   storagetype: yup.string().required("Please Fill in the Field!"),

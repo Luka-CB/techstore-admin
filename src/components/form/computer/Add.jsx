@@ -332,7 +332,7 @@ const AddComputer = () => {
               <TextField
                 color="secondary"
                 variant="outlined"
-                label="Product Display *"
+                label="Product Display"
                 name="screen"
                 value={values.screen}
                 onChange={handleChange}
