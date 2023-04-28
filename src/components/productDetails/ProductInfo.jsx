@@ -87,10 +87,14 @@ const ProductInfo = ({ colors, data, contentType }) => {
             </h3>
             <h3>
               Storage Size:{" "}
-              <span style={textColor}>{data.storage?.size} GB</span>
+              <span style={textColor}>
+                {data.storage?.size > 2
+                  ? `${data.storage?.size} GB`
+                  : `${data.storage?.size} TB`}
+              </span>
             </h3>
             <h3>
-              RAM: <span style={textColor}>{data.ram}</span>
+              RAM: <span style={textColor}>{data.ram} GB</span>
             </h3>
           </div>
           <div className="col">
@@ -202,10 +206,15 @@ const ProductInfo = ({ colors, data, contentType }) => {
               Card Slot: <span style={textColor}>{data.memory?.cardSlot}</span>
             </h3>
             <h3>
-              Internal: <span style={textColor}>{data.memory?.internal}</span>
+              Internal:{" "}
+              <span style={textColor}>
+                {data.memory?.internal > 2
+                  ? `${data.memory?.internal} GB`
+                  : `${data.memory?.internal} TB`}
+              </span>
             </h3>
             <h3>
-              RAM: <span style={textColor}>{data.memory?.ram}</span>
+              RAM: <span style={textColor}>{data.memory?.ram} GB</span>
             </h3>
             <Divider
               sx={{

@@ -251,12 +251,18 @@ const ProductContent = ({ data, contentType }) => {
       )}
       {contentType === "computer" && (
         <TableCell align="center" id="toggle-storage-ram">
-          {data?.storage?.size} GB / {data?.ram}
+          {data?.storage?.size > 2
+            ? `${data?.storage?.size} GB`
+            : `${data?.storage?.size} TB`}{" "}
+          / {data?.ram} GB
         </TableCell>
       )}
       {contentType === "cellphone" && (
         <TableCell align="center" id="toggle-storage-ram">
-          {data?.memory?.internal} / {data?.memory?.ram}
+          {data?.memory?.internal > 2
+            ? `${data?.memory?.internal} GB`
+            : `${data?.memory?.internal} TB`}{" "}
+          / {data?.memory?.ram} GB
         </TableCell>
       )}
       <TableCell
