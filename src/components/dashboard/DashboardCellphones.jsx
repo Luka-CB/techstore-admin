@@ -47,7 +47,7 @@ const DashboardCellphones = ({ cellphones }) => {
           <div className="content">
             {cellphones?.storages?.map((storage) => (
               <Typography key={storage} variant="body1" color="secondary">
-                {storage} GB
+                {storage > 2 ? `${storage} GB` : `${storage} TB`}
               </Typography>
             ))}
           </div>
