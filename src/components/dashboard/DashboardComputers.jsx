@@ -37,7 +37,7 @@ const DashboardComputers = ({ computers }) => {
           <div className="content">
             {computers?.rams?.map((ram) => (
               <Typography key={ram} variant="body1" color="secondary">
-                {ram} GB
+                {ram}
               </Typography>
             ))}
           </div>

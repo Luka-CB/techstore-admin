@@ -256,7 +256,6 @@ const UpdateComputer = () => {
                 sx={{ width: "30%" }}
               />
               <TextField
-                type="number"
                 color="secondary"
                 variant="outlined"
                 label="Product Ram *"
@@ -317,7 +316,6 @@ const UpdateComputer = () => {
                 color="secondary"
                 variant="outlined"
                 label="Storage Size *"
-                type="number"
                 name="size"
                 value={values.size}
                 onChange={handleChange}

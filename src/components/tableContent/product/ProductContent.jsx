@@ -250,19 +250,21 @@ const ProductContent = ({ data, contentType }) => {
         </TableCell>
       )}
       {contentType === "computer" && (
-        <TableCell align="center" id="toggle-storage-ram">
-          {data?.storage?.size > 2
-            ? `${data?.storage?.size} GB`
-            : `${data?.storage?.size} TB`}{" "}
-          / {data?.ram} GB
+        <TableCell
+          align="center"
+          id="toggle-storage-ram"
+          sx={{ textTransform: "uppercase" }}
+        >
+          {data?.storage?.size}/ {data?.ram}
         </TableCell>
       )}
       {contentType === "cellphone" && (
-        <TableCell align="center" id="toggle-storage-ram">
-          {data?.memory?.internal > 2
-            ? `${data?.memory?.internal} GB`
-            : `${data?.memory?.internal} TB`}{" "}
-          / {data?.memory?.ram} GB
+        <TableCell
+          align="center"
+          id="toggle-storage-ram"
+          sx={{ textTransform: "uppercase" }}
+        >
+          {data?.memory?.internal}/ {data?.memory?.ram}
         </TableCell>
       )}
       <TableCell

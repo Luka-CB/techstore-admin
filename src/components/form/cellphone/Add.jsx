@@ -586,7 +586,6 @@ const AddCellphone = () => {
                 sx={{ width: "30%" }}
               />
               <TextField
-                type="number"
                 color="secondary"
                 variant="outlined"
                 label="Internal *"
@@ -599,7 +598,6 @@ const AddCellphone = () => {
                 sx={{ width: "30%" }}
               />
               <TextField
-                type="number"
                 color="secondary"
                 variant="outlined"
                 label="RAM *"
