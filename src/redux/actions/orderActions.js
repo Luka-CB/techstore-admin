@@ -3,7 +3,7 @@ import axios from "../../utils/axios";
 
 export const getOrders = createAsyncThunk(
   "GET_ORDERS",
-  async ({ rppn = 0, orderId = "", userId = "", sortBy = "" }, thunkAPI) => {
+  async ({ rppn = 20, orderId = "", userId = "", sortBy = "" }, thunkAPI) => {
     const {
       auth: { admin },
     } = thunkAPI.getState();

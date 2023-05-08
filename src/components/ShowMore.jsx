@@ -1,11 +1,18 @@
 import React from "react";
-import { Box, IconButton, Tooltip, Zoom } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+  Typography,
+  Zoom,
+} from "@mui/material";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import TooltipTitle from "./TooltipTitle";
 import { useDispatch } from "react-redux";
 import { getOrders } from "../redux/actions/orderActions";
 
-const ShowMore = ({ colors, contentCount }) => {
+const ShowMore = ({ colors, contentCount, isLoading, orderCount }) => {
   const dispatch = useDispatch();
 
   const handleShowMore = () => {
@@ -25,6 +32,7 @@ const ShowMore = ({ colors, contentCount }) => {
     >
       <Box
         sx={{
+          position: "relative",
           width: "100%",
           height: 60,
           backgroundColor: colors.light[900],
@@ -38,8 +46,28 @@ const ShowMore = ({ colors, contentCount }) => {
         }}
         onClick={handleShowMore}
       >
-        <IconButton>
+        <Typography
+          variant="h6"
+          sx={{
+            position: "absolute",
+            left: 0,
+            pl: 2,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          Showing:{" "}
+          <span style={{ fontWeight: 200, fontSize: 20, marginLeft: 5 }}>
+            {contentCount}{" "}
+            <em style={{ fontSize: 15, marginRight: "3px" }}>of</em>{" "}
+            <b>{orderCount}</b>
+          </span>
+        </Typography>
+        <IconButton sx={{ position: "relative" }}>
           <ExpandCircleDownIcon color="info" sx={{ fontSize: "2.5rem" }} />
+          {isLoading ? (
+            <CircularProgress color="info" sx={{ position: "absolute" }} />
+          ) : null}
         </IconButton>
       </Box>
     </Tooltip>

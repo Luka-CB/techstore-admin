@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   orders: [],
+  count: 0,
   errorMsg: "",
 };
 
@@ -22,7 +23,8 @@ const getOrdersReducer = createSlice({
       .addCase(getOrders.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.orders = payload;
+        state.orders = payload.orders;
+        state.count = payload.orderCount;
       })
       .addCase(getOrders.rejected, (state, { payload }) => {
         state.isLoading = false;

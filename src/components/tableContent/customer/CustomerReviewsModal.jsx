@@ -47,7 +47,7 @@ const CustomerReviewsModal = () => {
           className="customer-reviews-container"
         >
           <Box className="customer-reviews-header">
-            <Typography variant="h4">Reviews - {3}</Typography>
+            <Typography variant="h4">Reviews - {reviews.length}</Typography>
             <IconButton
               color="error"
               sx={{

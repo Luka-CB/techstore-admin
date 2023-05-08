@@ -29,6 +29,9 @@ const OrderIdsModal = () => {
           onClick={(e) => e.stopPropagation()}
           className="paper"
         >
+          <Typography variant="h3" sx={{ textAlign: "center", padding: 3 }}>
+            Order Ids - {data.length}
+          </Typography>
           <IconButton
             color="error"
             sx={{

@@ -7,7 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import DeleteOrderModal from "../components/tableContent/order/DeleteOrderModal";
 
 const Orders = () => {
-  const { isLoading, orders } = useSelector((state) => state.getOrders);
+  const { isLoading, orders, count } = useSelector((state) => state.getOrders);
   const { isItemsModalOpen } = useSelector((state) => state.orderItems);
   const { isDelOrderModalOpen } = useSelector((state) => state.delOrderModal);
 
@@ -20,7 +20,7 @@ const Orders = () => {
     if (sortBy) {
       dispatch(getOrders({ rppn: 0, orderId: "", userId: "", sortBy: sortBy }));
     } else {
-      dispatch(getOrders({ rppn: 0, orderId: "", userId: "", sortBy: "" }));
+      dispatch(getOrders({}));
     }
   }, [sortBy, dispatch]);
 
@@ -28,6 +28,7 @@ const Orders = () => {
     <div>
       <DataTable
         content={orders}
+        count={count}
         contentType="order"
         contentLoading={isLoading}
       />

@@ -44,6 +44,7 @@ const omitCreateBtn = ["customer", "order", "review"];
 
 const DataTable = ({
   content,
+  count,
   totalProductCount,
   contentLoading,
   contentType,
@@ -121,26 +122,26 @@ const DataTable = ({
                 >
                   {contentType === "customer" ? (
                     <Typography variant="h6" mr="20px">
-                      {content?.length > 1 ? "Total Customers" : "Customer"}:{" "}
+                      {totalProductCount > 1 ? "Total Customers" : "Customer"}:{" "}
                       <span
                         style={{
                           color: colors.secondary[500],
                           fontSize: "1rem",
                         }}
                       >
-                        {content?.length}
+                        {totalProductCount ? totalProductCount : 0}
                       </span>
                     </Typography>
                   ) : contentType === "order" ? (
                     <Typography variant="h6" mr="20px">
-                      {content?.length > 1 ? "Total Orders" : "Order"}:{" "}
+                      {count > 1 ? "Total Orders" : "Order"}:{" "}
                       <span
                         style={{
                           color: colors.secondary[500],
                           fontSize: "1rem",
                         }}
                       >
-                        {content?.length}
+                        {count}
                       </span>
                     </Typography>
                   ) : (
@@ -208,7 +209,7 @@ const DataTable = ({
           }}
         >
           <Table
-            sx={{ minWidth: 650, position: "relative" }}
+            sx={{ minWidth: 650, minHeight: "60vh", position: "relative" }}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
           >
@@ -291,7 +292,12 @@ const DataTable = ({
           <CustomPagination colors={colors} contentType={contentType} />
         )}
         {contentType === "order" && content?.length >= 20 ? (
-          <ShowMore colors={colors} contentCount={content?.length} />
+          <ShowMore
+            colors={colors}
+            contentCount={content?.length}
+            isLoading={contentLoading}
+            orderCount={count}
+          />
         ) : null}
       </Paper>
       <FormControlLabel

@@ -15,8 +15,6 @@ import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import ReviewCard from "../components/reviews/ReviewCard";
 import { getReviews } from "../redux/actions/reviewActions";
 import TooltipTitle from "../components/TooltipTitle";
-import PostModal from "../components/reviews/PostModal";
-import DeleteReviewModal from "../components/reviews/DeleteReviewModal";
 
 const Reviews = () => {
   const [sort, setSort] = useState("desc");
@@ -69,14 +67,34 @@ const Reviews = () => {
       </Divider>
       <Box className="reviews">
         {isLoading ? (
-          <CircularProgress size={60} color="secondary" id="spinner" />
+          <>
+            {reviews?.length >= 20 ? null : (
+              <CircularProgress size={60} color="secondary" id="spinner" />
+            )}
+          </>
         ) : null}
 
         {reviews?.map((review) => (
           <ReviewCard key={review._id} data={review} />
         ))}
       </Box>
-      <Box className="show-more">
+      <Box className="show-more" position="relative">
+        <Typography
+          variant="h6"
+          sx={{
+            position: "absolute",
+            left: 0,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          Showing:{" "}
+          <span style={{ fontWeight: 200, fontSize: 20, marginLeft: 5 }}>
+            {reviews?.length}{" "}
+            <em style={{ fontSize: 15, marginRight: "3px" }}>of</em>{" "}
+            <b>{reviewCount}</b>
+          </span>
+        </Typography>
         <Button
           variant="outlined"
           color="warning"
@@ -84,7 +102,26 @@ const Reviews = () => {
           onClick={() => setRppn(reviews.length + 20)}
           disabled={reviews.length === reviewCount}
         >
-          <ExpandCircleDownIcon sx={{ fontSize: "1.6rem", mr: 2 }} />
+          <Box
+            sx={{
+              mr: 1,
+              width: 30,
+              height: 30,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            <ExpandCircleDownIcon sx={{ fontSize: "1.6rem" }} />
+            {isLoading && reviews?.length >= 20 ? (
+              <CircularProgress
+                color="warning"
+                size={26}
+                sx={{ position: "absolute" }}
+              />
+            ) : null}
+          </Box>
           <Typography sx={{ fontSize: "0.8rem" }}>Show More</Typography>
         </Button>
       </Box>
