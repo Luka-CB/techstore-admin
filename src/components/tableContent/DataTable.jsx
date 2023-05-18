@@ -267,11 +267,12 @@ const DataTable = ({
                             />
                           ))
                         : contentType === "order"
-                        ? content?.map((data) => (
+                        ? content?.map((data, i) => (
                             <OrderContent
                               key={data._id}
                               data={data}
                               contentType={contentType}
+                              index={i}
                             />
                           ))
                         : content?.map((data) => (

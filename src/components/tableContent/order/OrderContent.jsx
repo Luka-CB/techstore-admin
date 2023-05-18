@@ -42,10 +42,11 @@ import {
   toggleDelOrderModal,
 } from "../../../redux/features/modals/delOrderModalSlice";
 
-const OrderContent = ({ data, contentType }) => {
+const OrderContent = ({ data, contentType, index }) => {
   const [isItemChecked, setIsItemChecked] = useState(false);
   const [showLaunchIcon, setShowLaunchIcon] = useState(false);
   const [showCheckIcon, setShowCheckIcon] = useState(false);
+  const [orderIndex, setOrderIndex] = useState(null);
 
   const theme = useTheme();
   const colors = colorPallets(theme.palette.mode);
@@ -229,7 +230,7 @@ const OrderContent = ({ data, contentType }) => {
               >
                 <CloseIcon color="error" sx={{ fontSize: "1.3rem" }} />
 
-                {isLoading ? (
+                {isLoading && orderIndex === index ? (
                   <CircularProgress
                     color="error"
                     sx={{
@@ -250,7 +251,10 @@ const OrderContent = ({ data, contentType }) => {
               <IconButton
                 color="success"
                 sx={{ position: "absolute", top: 0, right: 0 }}
-                onClick={() => dispatch(updateDeliveredState(data.orderId))}
+                onClick={() => {
+                  dispatch(updateDeliveredState(data.orderId));
+                  setOrderIndex(index);
+                }}
               >
                 <CheckIcon />
               </IconButton>
