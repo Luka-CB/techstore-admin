@@ -241,7 +241,7 @@ const OrderContent = ({ data, contentType, index }) => {
               </Box>
             )}
           </Tooltip>
-          {showCheckIcon && !data.isDelivered ? (
+          {showCheckIcon && !data.isDelivered && data.isPaid ? (
             <Tooltip
               title={TooltipTitle("Change Status to Delivered")}
               placement="top"
