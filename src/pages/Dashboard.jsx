@@ -10,6 +10,7 @@ import DashboardOrders from "../components/dashboard/DashboardOrders";
 import DashboardReviews from "../components/dashboard/DashboardReviews";
 import DashboardTvs from "../components/dashboard/DashboardTvs";
 import { getDashboardInfo } from "../redux/actions/dashboardActions";
+import Head from "../components/Head";
 
 const Spinner = () => {
   return (
@@ -30,6 +31,7 @@ const Dashboard = () => {
 
   return (
     <Box className="dashboard-container">
+      <Head title="Techstore Admin | Welcome" />
       <Paper variant="outlined" className="customers">
         {isLoading ? (
           <Spinner />

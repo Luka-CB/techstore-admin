@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Head from "../components/Head";
 import DataTable from "../components/tableContent/DataTable";
 import { getProducts } from "../redux/actions/productActions";
 
@@ -23,6 +24,9 @@ const CellPhones = () => {
         contentType="cellphone"
         totalProductCount={paginationData && paginationData.totalDocs}
         contentLoading={isLoading}
+      />
+      <Head
+        title={`Cell Phones | ${paginationData && paginationData.totalDocs}`}
       />
     </div>
   );

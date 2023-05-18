@@ -15,6 +15,7 @@ import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import ReviewCard from "../components/reviews/ReviewCard";
 import { getReviews } from "../redux/actions/reviewActions";
 import TooltipTitle from "../components/TooltipTitle";
+import Head from "../components/Head";
 
 const Reviews = () => {
   const [sort, setSort] = useState("desc");
@@ -40,6 +41,7 @@ const Reviews = () => {
 
   return (
     <Box className="reviews-container">
+      <Head title={`Reviews | ${reviewCount}`} />
       <Divider>
         <Box className="reviews-header">
           <Box className="count">

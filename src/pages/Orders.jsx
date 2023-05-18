@@ -5,6 +5,7 @@ import { getOrders } from "../redux/actions/orderActions";
 import Items from "../components/tableContent/order/Items";
 import { useSearchParams } from "react-router-dom";
 import DeleteOrderModal from "../components/tableContent/order/DeleteOrderModal";
+import Head from "../components/Head";
 
 const Orders = () => {
   const { isLoading, orders, count } = useSelector((state) => state.getOrders);
@@ -32,6 +33,7 @@ const Orders = () => {
         contentType="order"
         contentLoading={isLoading}
       />
+      <Head title={`Orders | ${count}`} />
 
       {isItemsModalOpen ? <Items /> : null}
       {isDelOrderModalOpen ? <DeleteOrderModal /> : null}

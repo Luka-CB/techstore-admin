@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Head from "../components/Head";
 import CustomerReviewsModal from "../components/tableContent/customer/CustomerReviewsModal";
 import OrderIdsModal from "../components/tableContent/customer/OrderIdsModal";
 import DataTable from "../components/tableContent/DataTable";
@@ -29,6 +30,9 @@ const Customers = () => {
         contentType="customer"
         totalProductCount={paginationData && paginationData.totalDocs}
         contentLoading={isLoading}
+      />
+      <Head
+        title={`Customers | ${paginationData && paginationData.totalDocs}`}
       />
 
       {isOrderIdsModalOpen ? <OrderIdsModal /> : null}

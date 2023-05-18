@@ -4,6 +4,7 @@ import ForwardIcon from "@mui/icons-material/Forward";
 import AddComputer from "../components/form/computer/Add";
 import AddCellphone from "../components/form/cellphone/Add";
 import AddAccessory from "../components/form/accessory/Add";
+import Head from "../components/Head";
 
 const Create = () => {
   const { pathname } = useLocation();
@@ -11,6 +12,11 @@ const Create = () => {
 
   return (
     <div className="create-container">
+      <Head
+        title={`Create new ${productType
+          .charAt(0)
+          .toUpperCase()}${productType.slice(1)}`}
+      />
       <div className="create-text">
         <h1 style={{ textTransform: "capitalize" }}>add new {productType}</h1>
         <div className="arrow">

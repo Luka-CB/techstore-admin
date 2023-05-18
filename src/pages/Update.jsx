@@ -4,6 +4,7 @@ import ForwardIcon from "@mui/icons-material/Forward";
 import UpdateComputer from "../components/form/computer/Update";
 import UpdateCellphone from "../components/form/cellphone/Update";
 import UpdateAccessory from "../components/form/accessory/Update";
+import Head from "../components/Head";
 
 const Update = () => {
   const { pathname } = useLocation();
@@ -11,6 +12,11 @@ const Update = () => {
 
   return (
     <div className="update-container">
+      <Head
+        title={`Update ${productType
+          .charAt(0)
+          .toUpperCase()}${productType.slice(1)}`}
+      />
       <div className="update-text">
         <h1 style={{ textTransform: "capitalize" }}>Update {productType}</h1>
         <div className="arrow">

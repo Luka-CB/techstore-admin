@@ -22,6 +22,7 @@ import ProductColors from "../components/productDetails/ProductColors";
 import TooltipTitle from "../components/TooltipTitle";
 import ReviewCard from "../components/reviews/ReviewCard";
 import { getProductReviews } from "../redux/actions/reviewActions";
+import Head from "../components/Head";
 
 const Details = () => {
   const theme = useTheme();
@@ -49,6 +50,7 @@ const Details = () => {
 
   return (
     <Box>
+      <Head title={`Details | ${product?.name}`} />
       <Paper
         elevation={12}
         sx={{
