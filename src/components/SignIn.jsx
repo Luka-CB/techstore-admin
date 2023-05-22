@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  FormLabel,
   Paper,
   TextField,
   Typography,
@@ -80,17 +81,18 @@ const SignIn = () => {
             <TextField
               id="outlined-basic"
               color="secondary"
-              label="Username"
-              variant="outlined"
+              placeholder="admin"
+              variant="standard"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+
             <TextField
               id="outlined-basic"
               color="secondary"
-              label="Password"
-              variant="outlined"
+              placeholder="123456"
+              variant="standard"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{ mt: "40px" }}
